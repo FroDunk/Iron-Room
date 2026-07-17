@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Room v6</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- PWA / Add to Home Screen support -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Iron%20Room%22%2C%22short_name%22%3A%22Iron%20Room%22%2C%22start_url%22%3A%22./iron-room.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f0f0f%22%2C%22theme_color%22%3A%22%230f0f0f%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAGl0lEQVR4nO3dWWxUZRyG8ZlOS9uZlmlLg4G2UNaWVZRoUMMiNCKYiJhIvMIbo0EUIiKLARIQCJQQAlrkwpUoRlBiVIQgFDGARDbZMSBWoIhYSksp7dB2xgsTokaTc/rOd5bk%2Bd3yzfAPPHznnOk5QzAajQaA9kpxewD4GwFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJKluD2DPqnf7jH%2Byk8XF86ad37T%2BatLf9v8kEoHWlkRLS/xWY/xGXWv99dYrl29XX4j9cq759PHGs6ebbsfi4m/hQT4LyMuCwUBah2Bah1A4EsrvnPavX401xw/tb9i9ve7rzdeuXrntyoQmcAhzSHpGyoOjonOXdt996t61G0oGD81ye6LkICCnpaQExozP3bRzYPm63rmdfH8EICDXTHg6f/O3g0oHht0eREJAbupalL7%2By/59%2B/u4IQJyWTQ39a2PS7KyQ24P0k4E5L7C7ukzF3Zze4p2IiBPmDS5c7ceGW5P0R4E5Amh1OBTkzu7PUV7EJBX6B%2BFu8L3n0M47z9/QpKZmZIZCXUp6NCrNHPEmJzR43MjWfbOiwu7p3ctSr98MZa8SZ1AQMnR1BRvaorX1rScPNr4xSc1eflp88uL7W4q/QaFfRcQhzAjamtaXnn27I4ttbZe5cfzaAIyJR4PLJ37a1trwvpLorn%2BOyAQkEHVF2LHDt20vj4c8d9fh/8m9pfjRxqtL74ds7FdeQQBmXX9Wov1xfV1reYmMYSAzEoJBa0vrq0hIPxTbp6N8%2BLTx2wc7zyCgMwacl%2B2xZXNzfGfTt0yOowJBGRQce%2BM/ndHLC7evb3O1jW/RxCQKaFQcN6y4hTLf8Ab3//d5DimEJAR%2BXelrVnfZ3hZjsX1J4407t1Vb3IiU/z30ac3ZWSkhLNCXQo69O6XOaIsZ8z4vMyw1X%2BcbW2J%2BdPPJ/x3%2BAoECKgdFq/puXhNzyS%2B4YoFF0758PrrLxzCXLZuZfV7Fb%2B5PUX7sQO5prk5vmhm1WcfWnr42rMIyB17KuuXvVZ19kyT24OoCMhRbW2JvZX177xxef93N9yeJTkIyDkXq2Jzppw7%2BH2D24MkEyfRzikqTv9o64C3Py0dYPnjae8jIKcNL8vZtHPg8zMK3B4kOQjIBaHU4IwFRa%2Bv7hm0ca%2BHRxGQayY903nGAr8%2B0XwHAbnpuZe7PvqEL58nvIOrMNv%2B/mBhMBgIR0J5%2BaklAyIjH8kZN7FTdkd7zxMuWtXj8P4G/37pHTuQJJEINN5su1gV27Gldv7082VDjmze8Ietd4jmps4rLzYznRMIKJnqalvnvvDz6iUXbb1q7ON5D4yMGhrJNAJKvrUrqjd%2BYO8nXHOWdPfpFRkBGbF4dlXVuWbr60sHhn16Nk1ARsSa4/Omnbf1kpfmFFq//9U7fDiyTxzYd6Ny63Xr63uVZI6b6L9NiIAMWrnwQtzO/24w5dVC350JEZBB5840bfv8mvX1fUozx07w2SZEQGatXVFt6275qbMK/LUJEZBZZ0/f%2BuYrG18z1bd/uOyxPHPzJB0BGVex/JK9TWi2n%2B70ICDjzpy4tWubjcuxfoMio8flmpsnuQjICW8uv2Rr/YuzCw1NknQE5ISTPzbu3l5nff2AIZFRY3NMTZNUBOSQinJ7m9DUWf7YhAjIIUcP3txTaePrEwYPzbL%2B3QwuIiDn2N%2BEfHA5RkDOOby/wdbzhPfcn/3Qw16/T4iAHFVh83JsqucvxwjIUT/svXFgn41NaOiw7GEjOpqbR0dATqtYXm1rvcc3oWA06vWjLLyMHQgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAJXkmMdXsG%2BBg7ECQEBAkBQUJAkBAQJAQECQFBQkCQ/AkyCmeUs/2BzQAAAABJRU5ErkJggg%3D%3D%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image/png%22%7D%2C%7B%22src%22%3A%22data%3Aimage/png%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAATk0lEQVR4nO3deZCcdZ3H8e7puSeZmdyZBAIkISZgwrVEpXClRE5BORQBRS5XAqKssCKLx1IluqCggoSACRVRgooLiALeCyhqNixHEBAICZuY%2BySTTObu2T/W0tJFIZDpX/fzfb3%2BDJV6PlRX%2Bl1PP93Pk29packBEE9V6gEApCEAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABCUAAEEJAEBQAgAQlAAABFWdegC7xiGHtcz//rQkhz5m5uJlz3eW%2BKAJ/39fv/7%2BgWJ/rr840N830N1V7O4e6O4sdnT0d2zr376tf9vW/s2bejdv7N28sW/Dup61q3rWrOppf6kv9WoySACg1AqFfKGQq8nlc7lc05DCq/krHdv7V7zYtWJZ9/8s7VzybOeSZ3YsW9LV010c5KVknABABWgaUpg2vWna9KY//Ulf78Bzz%2Bz43WPbFz%2ByfdGv21cu7044jwolAFCRqmvy%2B%2B7XtO9%2BTaeePSaXy61Z1fPbh7Y%2B%2BJMtv3lg67b2/tTrqAwCAFnQNr72pNNHnXT6qL7egd8%2BtPVHd2/62b1b2re6csDf41tAkCnVNfm3vqP1C7MnPfzcgdd8ffLMQ5tTL6J8CQBkU1191fGnjPzWvfvc8/CME08bVajOp15E2REAyLipb2y8as6kn/z3/ieeNqpQkAH%2BTAAghN33rLtqzqS7Hpp%2B8CE%2BFOKPBAACmfrGxtvu3%2Bffb5zU3OILIAgAxHPS6aPuXTjjgJlDUw8hMQGAiMa01X7r3n1Ofv%2Bo1ENISQAgqJra/BdmT/rUVXv6glBYAgChfXDW2C/Pm1zlnSAkLztEd/QJIz533cTUK0hAAIDce84Yfdnn90i9glITACCXy%2BXO/kjbaeeOSb2CkhIA4I8u%2B/wek97QkHoFpSMAwB/V11ddM3dyTa0vBUUhAMCf7TOj6aLLd0%2B9ghIRAOAvnHVB27jd61KvoBQEAPgLNbX5Cy/bLfUKSkEAgL92wqkjJ05xNTj7BAD4a4VC/sJPOgnIPgEAXsaRxw9vGeaW0RknAMDLqKnNv/PkEalXMLgEAHh5J53uZtEZJwDAy5t%2B4BCXgrNNAIC/6a2Ht6aewCBykQd2zjEzFy97vnOn/kpVVa6mtqqmJl/fUNU6vLp1WPXottoJe9VP2Ktu2oymKdMaq2vK9O4LMw8deuucNalXMFgEAAZdsZjr7ip2d%2BW2b%2BvfuL73r/5rbV3V/gcPOeyoYUccN2zCXvVJFv4t//CW5nw%2BNzCQegeDw0dAkFhPd3HRw%2B1f/MzyIw984sx3PfPAj7ekXvRnrcOrJ09tTL2CwSIAUC4GBnILf9k%2B69TnTjv66Ree3blPmQbPgW8aknoCg0UAoOw8tnDbyYf97s7b1qceksvlchMmltenUuxCAgDlqKurePmFy%2BbPTn8BttwuS7ALCQCUr6s/vfzn921Ou0EAMkwAoHwNDOQuO3/p///iUCntvqdnA2SWAEBZ29bef%2B0VKxIOaBpSaG71ffFsEgAod/fcsXHNqp6EA5qavFFkk9cVyl1/38B3569LOKChqZDw6AweAYAK8NMfprwU3NDojSKbvK5QAZY%2B17lqRXeqozc2OgPIJgGAyvC7x7anOnS9M4CM8rpCZXh6cUeqQxf73Q0umwQAKsPqPyT7IlB3VzHVoRlUAgCVYc3KZNcAurudAWSTAEBl2Nben%2BrQnTuSHZpBJQBQGRJ%2BDpP2XhQMHgGAytDbk%2BZzmN6ega1b%2BpIcmsEmAFAZ6hrS/GvdsL7HIyGzSgCgMtTXp/nXunJ5sovPDDYBgMowfGSaW3IueaZcHk7JLicAUBnGjqtNctwlv9%2BR5LiUgABAZdhtzzRP5nr2KQHILAGAyvDG/ZtKf9DOzuJTTyS7BxGDTQCgAlRV5aYfOKT0x31s4bZUXz%2BlBAQAKsD%2BM4cOG5HgIvB//aq99AelZAQAKsDR7x6e5LhpH0TDYBMAKHcNjVUnvX906Y/7zJMdLy7xHdAsEwAodx%2Bc1Ta0OcEzue77j02lPyilJABQ1trG157/L%2BNLf9yuruKdC9aX/riUkgBA%2BaqpzX9l/t5Jnsl%2Bz3c2btnkHnAZJwBQpgrV%2BavnTD5g5tDSH7pYzH3jxjWlPy4llubuIsDf19xSffXNk95%2B9LAkR7/79vXLnnf5N/sEAMrOYUe1/tu1e43brS7J0Tt3FL9y5R%2BSHJoSEwAoF4VC/m1HtJ7zsbaDD2lOOOPGL63csNYjwEIQAEisoaHqoLcMfduRw444fnjb%2BDS3/PyTJx7Zfsv1Pv2PQgBg0OXzuZraqpqafENjVevw6tZh1WPG1e6%2BZ/2EifX77te097SGQiGfemMul8t1dhYvnfVCf7%2Bb/0QhALBzfrRov9QTBsvlH1m6fGlX6hWUjq%2BBArlcLnfDVSvvv8tPf2MRACB397c33HD1ytQrKDUBgOjuun3D5R9ZOuCT/3gEAEK749b1n7pwabGYegcpuAgMQRWLuWuvWDHv%2BtWph5CMAEBE7Vv7Lj1v6QM/3pJ6CCkJAISz8Jftn5z1wtrVPamHkJgAQCA7Ovq/euXKb960xiVfcgIAcfzwjo1Xf3a5%2B/zwJwIA2febB7de/4WVjy/alnoI5UUAIMt%2B9fOXZn9xlbd%2BXpYAQAa1b%2B37/rc33n7LuheXeK4Lf5MAQHb09Q78%2BoGt99218af3bO7s9OMuXoEAQEY8%2Bej2Ky558eknOlIPoWK4FQRkxIyDhtz14PT7Fu4365LxY8clfrAMFUEAIFMmT234%2BGd2/88nD7hm7uS9pzWmnkNZEwDIoEJ1/vj3jvzBr2dcNWfS6LHOBnh5AgCZVVWVO/G0Ufcv2u%2BUM0en3kI5EgDIuKHNhc9dN3H2ginNrb70wV8QAAjhHe8cfvdD0ye9oSH1EMqIAEAUu%2B1R952f7vumtzanHkK5EAAIpLmleu73ph56eGvqIZQFAYBY6uqr5tw%2B5ZDDWlIPIT0BgHBq66puuG3KPjOaUg8hMQGAiJqGFL5%2Bx1Q/EQhOACCoUWNrZi%2BYUlvnTSAurz3ENeOgIZ%2B6ao/UK0hGACC0U88ec9S7h6deQRp%2BGQg755iZi5c9/wpPWamtq6qryw8ZWhgxumZMW%2B3EKQ17T2088M1Dd9%2BzrjQjd8qV109c/Mj2tat7Ug%2Bh1AQAdr2e7mJPd25be/%2BaVT1PPd7xi/u3/N%2Bfj2mrfcdxw445ccTBh5TRr7GaW6o//7WJ5578bOohlJqPgKB01q3pWTB33QeOfea4Ny%2B%2B%2B9sbimXzzK5DD2997wfdMC4cAYAEljzbedn5S991yOJHF5bL49ov/dyEkaNrUq%2BgpAQAklnybOcHjn36S/%2B2or9/IPWWXHNL9WVX%2BkZQLAIAKRWLuXnXrf7wKc917kj/edDxp4x0q7hQBADSe/gXL51z0u87tvenHpL79NV7Fgr51CsoEQGAsvDYwm2zTn2utyfxZ0FT9ml0NTgOAYBysejh9n%2B9cGnqFbmLPrVb05BC6hWUggBAGfnhHRtvnbMm7YbhI2vO/Whb2g2UhgBAefniZ1c8vijxd0PPvrBtxChfCc0%2BAYDy0tc78MlZSzs7U34pqLGpMOuS8QkHUBoCAGVn%2BbKua69YkXbDqWePHtPmaQEZJwBQjhbMXfvko9sTDqitq/rwx8clHEAJCACUo2Ixd8XFL6b9hfApZzoJyDgBgDL19OKOO25dn3BAbV3Vhy5yEpBlAgDl64arVqb9efApZ412h7gMEwAoXxvX9867bnXCAfX1Ved81ElAZgkAlLVv3Lh288behANOP3dM63BPjsomAYCytqOj/5brU/42uKGx6qwL/DA4mwQAyt2CuWs3rk95EnDGeWObW5wEZJAAQLnr7CzOn53yJGDI0MIZs8YmHMAgEQCoALfPW7d1S1/CAWfOGusWodkjAFABdnT033rT2oQDWoZVn/6hMQkHMBgEACrDt25au31byt8EnHNhW0ODd4xM8XJCZWjf2rdgbsqTgOEja953tpOATBEAqBjzZ69J%2B%2Bz4cz/WVlvnTSM7vJZQMbZs6vvO/HUJB4weW/ueM0YlHMCuJQBQSW752ururpQnAf/0z%2BOqa/IJB7ALCQBUkg1re%2B%2B8bUPCAeN2qzvhVCcBGSEAUGHmfnV1X2/K5wScd/G4QsFJQBYIAFSY1Su77/luypOACXvVH/feEQkHsKsIAFSem7%2B8Ou3DwmZdPL7Km0fl8xpC5Vm%2BrOv%2BuzYlHDBxSsNR73YSUPEEACrSTdeuGkh5DpC74BPj8y4EVDgBgIr0wrOdP7t3c8IBU/ZpPPzY4QkH8PoJAFSqOV9alXbABZ8Yn3YAr5MAQKV65smOB3/yUsIB%2B%2B7f9I9HtCYcwOskAFDB5lyzMu0AJwEVTQCggj3xyPbfPrQ14YADZg59y9taEg7g9RAAqGw3uhLAayUAUNkWPdz%2B6MJtCQfMPLT5oDcPTTiA10wAoOLNuSb1ScClu6UdwGsjAFDxfvXzl556vCPhgEPf3jLjoCEJB/DaCABkQfKTgPNdCahAAgBZ8Iv7Nz//zI6EA95%2B9LBp05sSDuA1EADIgoGB3E3XOglg5wgAZMSP7t704pLOhAOOPH745KkNCQewswQAMqJYzN385dUJB%2BTzuVmXOAmoJAIA2fGD721cubw74YBjTxqxx6T6hAPYKQIA2dHfNzD3qylPAgqF/HkXOwmoGAIAmXLngvXr1vQkHHDC%2B0aOn1CXcACvngBApvT2DMy7LulJQHX%2Bwx8fl3AAr54AQNbc8Y31mzb0Jhxw8vtHj2mrTTiAV0kAIGu6uorzZ69JOKCmNv%2Bhi5wEVAABgAy6fd66rVv6Eg445azRI0fXJBzAqyEAkEEd2/u/efPahAPq66vO%2BaiTgHInAJBN35yzdvu2/oQDTjtndOvw6oQDeEUCANnUvrXv9nnrEg5obCqcdUFbwgG8IgGAzJo/e01nZzHhgDPOG9vc4iSgfOVbWjzQGSAiZwAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABCUAAAEJQAAQQkAQFACABBUfu3AUak3AJCAMwCAoAQAICgBAAhKAACCEgCAoAQAICgBAAhKAACCEgCAoAQAICgBAAhKAACCEgCAoAQAICgBAAhKAACCEgCAoAQAICgBAAhKAACCEgCAoAQAICgBAAhKAACC%2Bl%2BDZ7dpsOiznAAAAABJRU5ErkJggg%3D%3D%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/png%22%7D%5D%7D">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Iron Room">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<style>
+:root{--bg:#0f0f0f;--surface:#1a1a1a;--surface2:#222;--border:#2e2e2e;--accent:#e8ff47;--accent2:#ff6b35;--text:#f0f0f0;--muted:#777;--done:#3a3a1a;--done-border:#7a8a00;--red:#3a1a1a;--red-b:#ef5350;--green:#1a3a1a;--green-b:#4caf50;--blue:#1a1a3a;--blue-b:#5c9bff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding-bottom:80px}
+button{font-family:'DM Sans',sans-serif}
+.hdr{background:#111;border-bottom:3px solid var(--accent);padding:16px 16px 12px;position:sticky;top:0;z-index:100}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.logo{font-family:'Bebas Neue',cursive;font-size:1.9rem;color:var(--accent);letter-spacing:2px;line-height:1}
+.logo small{display:block;font-family:'DM Sans',sans-serif;font-size:0.7rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:300}
+.day-tabs{display:flex;gap:6px}
+.dtab{flex:1;padding:9px 4px;border:2px solid var(--border);background:transparent;color:var(--muted);font-family:'Bebas Neue',cursive;font-size:1.05rem;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all .15s;text-align:center}
+.dtab:hover{border-color:var(--accent);color:var(--accent)}
+.dtab.active{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
+.main{padding:16px}
+.vtabs{display:flex;gap:6px;margin-bottom:16px}
+.vtab{flex:1;padding:8px 4px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .15s;text-align:center}
+.vtab:hover{border-color:var(--accent2);color:var(--accent2)}
+.vtab.active{border-color:var(--accent);color:var(--accent);background:#1f1f00}
+.start-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px;margin-bottom:14px}
+.readiness-row{display:flex;gap:6px;margin-bottom:4px}
+.r-btn{flex:1;padding:8px 2px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.8rem;cursor:pointer;border-radius:2px;transition:all .15s;text-align:center}
+.r-btn.sel{border-color:var(--accent);color:var(--accent);background:#1f1f00}
+.timer-bar{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.timer-disp{font-family:'Bebas Neue',cursive;font-size:2.1rem;color:var(--accent);letter-spacing:2px}
+.timer-disp.warn{color:var(--accent2)}
+.tbtn{background:var(--accent);color:#0f0f0f;border:none;padding:9px 18px;font-family:'Bebas Neue',cursive;font-size:1.05rem;letter-spacing:1px;cursor:pointer;border-radius:2px}
+.tbtn.running{background:var(--accent2)}
+.prog-wrap{margin-bottom:14px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;margin-bottom:10px;overflow:hidden}
+.ex-card.done{background:var(--done);border-color:var(--done-border)}
+.ex-card.optional-ex{border-style:dashed}
+.ex-hdr{padding:13px 14px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.ex-num{font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--muted);width:22px;flex-shrink:0}
+.ex-card.done .ex-num{color:var(--done-border)}
+.ex-inf{flex:1}
+.ex-name{font-weight:600;font-size:0.92rem;margin-bottom:1px}
+.ex-card.done .ex-name{text-decoration:line-through;color:var(--muted)}
+.ex-meta{font-size:0.72rem;color:var(--muted);letter-spacing:.5px}
+.ex-tag{font-size:0.62rem;padding:2px 7px;background:var(--surface2);border-radius:20px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;border:1px solid var(--border);white-space:nowrap;flex-shrink:0}
+.ex-card.done .ex-tag{background:var(--done-border);color:#0f0f0f;border-color:var(--done-border)}
+.ruck-badge{font-size:0.6rem;padding:2px 6px;background:#1a1a00;border:1px solid #5a5a00;border-radius:20px;color:#aaa800;margin-left:4px;vertical-align:middle}
+.ex-body{padding:0 14px 13px;display:none}
+.ex-body.open{display:block}
+.form-block{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:11px;margin-bottom:10px}
+.form-title{font-size:0.68rem;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:600}
+.form-cue{font-size:0.75rem;color:var(--muted);line-height:1.6;margin-bottom:4px}
+.form-cue strong{color:var(--text);font-weight:600}
+.tempo-badge{display:inline-block;background:#1a1a00;border:1px solid var(--accent);color:var(--accent);font-size:0.65rem;padding:2px 8px;border-radius:20px;letter-spacing:1px;margin-bottom:8px;font-family:'Bebas Neue',cursive}
+.mistake-row{margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.mistake-title{font-size:0.65rem;color:var(--red-b);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.wt-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:9px 11px}
+.wt-left{flex:1}
+.wt-lbl{font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.wt-prev{font-size:0.67rem;color:var(--muted);margin-top:3px;font-style:italic}
+.wt-ctrl{display:flex;align-items:center;gap:6px}
+.wadj{width:30px;height:30px;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.wadj:hover{border-color:var(--accent);color:var(--accent)}
+.wval{font-family:'Bebas Neue',cursive;font-size:1.4rem;color:var(--accent);min-width:50px;text-align:center;letter-spacing:1px}
+.wunit{font-size:0.67rem;color:var(--muted);text-align:center}
+.feel-row{display:flex;gap:5px;margin-bottom:8px}
+.fbtn{flex:1;padding:6px 2px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.68rem;cursor:pointer;letter-spacing:.5px;text-align:center;transition:all .15s}
+.fbtn.light.sel{background:var(--green);border-color:var(--green-b);color:var(--green-b)}
+.fbtn.perfect.sel{background:#1a2a3a;border-color:var(--accent);color:var(--accent)}
+.fbtn.heavy.sel{background:var(--red);border-color:var(--red-b);color:var(--red-b)}
+.reps-row{display:flex;gap:5px;margin-bottom:10px}
+.repbtn{flex:1;padding:6px 4px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:0.68rem;cursor:pointer;text-align:center;transition:all .15s}
+.repbtn.sel{border-color:var(--accent2);color:var(--accent2);background:#2a1500}
+.swap-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:0.72rem;cursor:pointer;border-radius:2px;margin-bottom:8px;letter-spacing:1px;transition:all .15s}
+.swap-btn:hover{border-color:var(--accent2);color:var(--accent2)}
+.swap-panel{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:11px;margin-bottom:8px}
+.swap-ttl{font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px}
+.swap-opt{display:block;width:100%;text-align:left;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:3px;color:var(--text);font-size:0.82rem;cursor:pointer;margin-bottom:5px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.swap-opt:hover{border-color:var(--accent);color:var(--accent)}
+.swap-opt small{display:block;font-size:0.68rem;color:var(--muted);margin-top:2px}
+.swap-cancel{display:block;width:100%;padding:7px;background:transparent;border:1px dashed var(--border);color:var(--muted);font-size:0.72rem;cursor:pointer;border-radius:2px;margin-top:3px;font-family:'DM Sans',sans-serif}
+.sets-row{display:flex;gap:7px;margin-bottom:9px}
+.sbt{width:40px;height:40px;border-radius:3px;border:2px solid var(--border);background:transparent;color:var(--muted);font-family:'Bebas Neue',cursive;font-size:1.05rem;cursor:pointer;transition:all .15s}
+.sbt.done-s{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
+.mark-btn{width:100%;padding:9px;background:transparent;border:1px dashed var(--border);color:var(--muted);font-size:0.78rem;cursor:pointer;border-radius:2px;letter-spacing:1px;transition:all .15s}
+.mark-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ex-card.done .mark-btn,.ex-card.done .swap-btn{display:none}
+.sec-hdr{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;color:var(--muted);margin:22px 0 4px;text-transform:uppercase}
+.sec-sub{font-size:0.7rem;color:var(--muted);margin-bottom:12px;letter-spacing:.5px}
+.bonus-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;margin-bottom:8px;overflow:hidden}
+.bonus-card.b-open{border-color:var(--accent2)}
+.bonus-card.b-done{background:var(--done);border-color:var(--done-border)}
+.b-hdr{padding:11px 14px;display:flex;align-items:center;gap:9px;cursor:pointer}
+.b-icon{font-size:1.1rem}
+.b-inf{flex:1}
+.b-name{font-weight:600;font-size:0.87rem}
+.bonus-card.b-done .b-name{text-decoration:line-through;color:var(--muted)}
+.b-desc{font-size:0.7rem;color:var(--muted);margin-top:1px}
+.b-tag{font-size:0.62rem;padding:2px 7px;border-radius:20px;border:1px solid var(--border);color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.bonus-card.b-done .b-tag{background:var(--done-border);color:#0f0f0f;border-color:var(--done-border)}
+.b-body{padding:0 14px 13px;display:none}
+.b-body.open{display:block}
+.b-log-btn{width:100%;padding:9px;background:var(--accent2);border:none;color:#fff;font-family:'Bebas Neue',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;border-radius:2px}
+.bonus-card.b-done .b-log-btn{display:none}
+.done-banner{display:none;background:linear-gradient(135deg,#2a2a00,#1a1a00);border:2px solid var(--accent);border-radius:4px;padding:18px;text-align:center;margin-top:14px}
+.done-banner.show{display:block}
+.done-banner h2{font-family:'Bebas Neue',cursive;font-size:1.8rem;color:var(--accent);letter-spacing:3px;margin-bottom:5px}
+.done-banner p{color:var(--muted);font-size:0.82rem}
+.log-btn{background:var(--accent);border:none;padding:11px 28px;font-family:'Bebas Neue',cursive;font-size:1.15rem;letter-spacing:2px;cursor:pointer;border-radius:2px;margin-top:12px}
+.hist-session{background:var(--surface);border:1px solid var(--border);border-radius:4px;margin-bottom:12px;overflow:hidden}
+.hist-hdr{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid var(--border)}
+.hist-date{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--accent)}
+.hist-meta{font-size:0.7rem;color:var(--muted)}
+.hist-body{padding:12px 14px;display:none}
+.hist-body.open{display:block}
+.hist-ex-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)}
+.hist-ex-row:last-child{border-bottom:none}
+.hist-ex-name{font-size:0.82rem;font-weight:500}
+.hist-ex-detail{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.hist-wt{font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--accent);letter-spacing:1px}
+.hist-feel{font-size:0.65rem;margin-top:2px}
+.data-area{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:12px;font-size:0.72rem;color:var(--muted);font-family:monospace;word-break:break-all;max-height:200px;overflow-y:auto;margin-bottom:10px}
+.data-btn{width:100%;padding:10px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:0.8rem;cursor:pointer;border-radius:3px;margin-bottom:8px;transition:all .15s;letter-spacing:1px}
+.data-btn:hover{border-color:var(--accent);color:var(--accent)}
+.data-btn.primary{background:var(--accent);color:#0f0f0f;border-color:var(--accent);font-weight:600}
+.data-import{width:100%;padding:9px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text);resize:vertical;min-height:80px;margin-bottom:8px;font-size:0.72rem;font-family:monospace}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="logo">Iron Room<small>Jeff's Training Log</small></div>
+    <div id="sessionBadge" style="font-family:'Bebas Neue',cursive;font-size:0.95rem;color:var(--muted);letter-spacing:1px"></div>
+  </div>
+  <div class="day-tabs">
+    <button class="dtab" id="tab-push" onclick="selectDay('push')">Push<br><span style="font-size:0.6rem;font-family:'DM Sans',sans-serif">Chest·Shoulders·Tris</span></button>
+    <button class="dtab" id="tab-pull" onclick="selectDay('pull')">Pull<br><span style="font-size:0.6rem;font-family:'DM Sans',sans-serif">Back·Biceps·Core</span></button>
+    <button class="dtab" id="tab-legs" onclick="selectDay('legs')">Legs<br><span style="font-size:0.6rem;font-family:'DM Sans',sans-serif">Quads·Hams·Glutes</span></button>
+    <button class="dtab" id="tab-ruck" onclick="selectDay('ruck')">Ruck<br><span style="font-size:0.6rem;font-family:'DM Sans',sans-serif">Morning Walk</span></button>
+    <button class="dtab" id="tab-more" onclick="selectDay('more')">More<br><span style="font-size:0.6rem;font-family:'DM Sans',sans-serif">Weight·Tips·Index</span></button>
+  </div>
+</div>
+<div class="main" id="main"></div>
+<script>
+const SK='ironroom_v6';
+
+// ─── EXERCISE DATABASE ────────────────────────────────────────────────────────
+const DB={
+push:{
+  label:'Push Day',focus:'Chest · Shoulders · Triceps · Rear Delts',
+  exercises:[
+    {id:'p1',name:'Incline Dumbbell Press',sets:3,reps:'10–12',dw:30,ruck:false,muscles:['Upper Chest','Anterior Deltoid','Triceps'],
+     tempo:'2 up · pause · 3 down',
+     tip:'Set bench to 30–45°. Start with dumbbells at shoulder height, palms forward. Press up and very slightly inward — they should nearly touch at the top. Lower slowly until elbows are just below bench level.',
+     cues:['Keep shoulder blades pinched together throughout — this protects your shoulder joint','Feet flat on the floor, lower back has a natural arch — don\'t arch excessively','At the top, squeeze the chest hard for a full second before lowering'],
+     mistakes:['Letting elbows flare out past 90° — keep them at 45° from your torso','Bouncing the weight off your chest or rushing the descent','Raising your hips off the bench to compensate for too much weight']},
+    {id:'p2',name:'Dumbbell Shoulder Press',sets:3,reps:'10–12',dw:25,ruck:false,muscles:['Anterior/Lateral Deltoid','Triceps','Upper Traps'],
+     tempo:'2 up · pause · 3 down',
+     tip:'Seated on bench edge, feet flat. Start with dumbbells at ear height, elbows at 90°. Press directly overhead until arms are fully extended. Lower with control.',
+     cues:['Think about pressing the ceiling, not the wall — keep the path vertical','Brace your core throughout — no leaning back as the weight gets heavy','Full lockout at the top, but don\'t slam the joints'],
+     mistakes:['Turning it into a standing push press with leg drive — stay seated and strict','Letting the dumbbells drift forward instead of pressing straight up','Using momentum on the way up instead of controlled muscle contraction']},
+    {id:'p3',name:'Dumbbell Lateral Raise',sets:3,reps:'12–15',dw:15,ruck:false,muscles:['Lateral Deltoid'],
+     tempo:'2 up · hold 1 · 3 down',
+     tip:'Stand or sit. Dumbbells at sides, slight bend in elbow throughout — lock that bend in and don\'t change it. Raise to shoulder height only. Pour-the-pitcher motion: thumbs slightly down at the top.',
+     cues:['Lead with your elbows, not your hands','Raise to exactly shoulder height — going higher shifts work to traps','The hold at the top is where the growth happens — don\'t skip it'],
+     mistakes:['Using too much weight and turning it into a full-body swing','Straightening the elbow during the movement','Shrugging the traps — keep shoulders depressed throughout']},
+    {id:'p4',name:'Flat Bench Dumbbell Fly',sets:3,reps:'12',dw:20,ruck:false,muscles:['Chest (Pectoralis Major)'],
+     tempo:'2 out · stretch · 3 back',
+     tip:'Lie flat on bench. Dumbbells above chest, palms facing each other, slight bend in elbows — that bend is fixed throughout. Lower in a wide arc until you feel a full chest stretch. Reverse the arc back up.',
+     cues:['Think of hugging a large barrel — the arc shape never changes','Feel the stretch at the bottom — that\'s the stimulus. Don\'t rush past it','Squeeze the chest at the top, not the arms'],
+     mistakes:['Bending the elbows more as the weight gets heavier — this turns it into a press','Going too heavy and losing the arc motion','Not achieving a full stretch at the bottom']},
+    {id:'p5',name:'Tricep Overhead Extension',sets:3,reps:'12',dw:25,ruck:false,muscles:['Triceps (long head)'],
+     tempo:'2 down · pause · 2 up',
+     tip:'Seated or standing. Hold one dumbbell with both hands, palms cupping the top plate. Start overhead, arms extended. Lower behind your head by bending only at the elbows. Press back up.',
+     cues:['Keep elbows pointed forward and close to your head — they should not flare wide','The upper arm is completely stationary — only the forearm moves','Feel the stretch in the tricep at the bottom — that\'s the long head being loaded'],
+     mistakes:['Letting elbows flare out to the sides','Moving the upper arm — the hinge is only at the elbow','Rushing up without full extension at the top']},
+    {id:'p6',name:'Bent-Over Rear Delt Fly',sets:3,reps:'12–15',dw:12.5,ruck:false,muscles:['Rear Deltoid','Upper Back'],
+     tempo:'2 up · hold 1 · 3 down',
+     tip:'Hinge at hips to about 45°, back flat, dumbbells hanging below chest. Raise arms out to sides with thumbs slightly rotated down. Think about pulling your elbows to the ceiling.',
+     cues:['Keep your back flat — don\'t round under the weight','Thumbs-down rotation ensures the rear delt does the work, not the traps','The range of motion is smaller than you think — shoulder height is the limit'],
+     mistakes:['Shrugging instead of flying — this is a delt move not a trap move','Using momentum and swinging the weights','Raising too high and turning it into a shoulder exercise']},
+  ],
+  swaps:{
+    p1:[{id:'p1a',name:'Flat Bench Dumbbell Press',reps:'10–12',dw:35,muscles:['Chest','Triceps'],note:'Classic chest builder. Full range of motion with bench support.'},{id:'p1b',name:'Decline Dumbbell Press',reps:'10–12',dw:35,muscles:['Lower Chest','Triceps'],note:'Lower chest emphasis. Great for overall chest fullness.'},{id:'p1c',name:'Push-Up Board (Wide Grip)',reps:'Max',dw:0,muscles:['Chest','Shoulders'],note:'Push-up board wide position. Chest-focused bodyweight option. Add ruck vest for resistance.'}],
+    p2:[{id:'p2a',name:'Arnold Press',reps:'10–12',dw:20,muscles:['Full Deltoid','Triceps'],note:'Rotate from palms-in to palms-out as you press. Hits all three delt heads.'},{id:'p2b',name:'Push-Up Board (Narrow)',reps:'Max',dw:0,muscles:['Triceps','Shoulders'],note:'Close grip push-up board position. Shoulder + tricep emphasis. Add ruck vest for load.'},{id:'p2c',name:'Flybird Twister (Overhead)',reps:'15–20',dw:0,muscles:['Shoulders (light)'],note:'Overhead pressing motion with twister resistance. Light shoulder activation, good warm-up or deload option.'}],
+    p3:[{id:'p3a',name:'Upright Row',reps:'12',dw:20,muscles:['Traps','Lateral Deltoid'],note:'Pull to chin, elbows wide. Traps + lateral delts.'},{id:'p3b',name:'Front Raise',reps:'12–15',dw:12.5,muscles:['Anterior Deltoid'],note:'Straight-arm raise to shoulder height. Front delt isolation.'},{id:'p3c',name:'Flybird Twister (Side)',reps:'15',dw:0,muscles:['Lateral Deltoid (light)'],note:'Lateral resistance motion. Light isolation, good for high-rep shoulder endurance work.'}],
+    p4:[{id:'p4a',name:'Incline Dumbbell Fly',reps:'12',dw:15,muscles:['Upper Chest'],note:'Upper chest emphasis. Great paired with flat pressing.'},{id:'p4b',name:'Push-Up Board (Neutral)',reps:'Max',dw:0,muscles:['Chest','Triceps'],note:'Neutral grip push-up board. Chest + tricep. Add ruck vest to increase difficulty.'},{id:'p4c',name:'Dumbbell Pullover',reps:'12',dw:25,muscles:['Chest','Lats','Serratus'],note:'Across bench, arc behind head. Chest + serratus.'}],
+    p5:[{id:'p5a',name:'Skull Crusher (Dumbbells)',reps:'12',dw:20,muscles:['Triceps'],note:'Lying on bench, lower to forehead. Classic tricep mass builder.'},{id:'p5b',name:'Tricep Kickback',reps:'12–15',dw:15,muscles:['Triceps'],note:'Hinge forward, extend arm back to full lockout.'},{id:'p5c',name:'Push-Up Board (Diamond)',reps:'Max',dw:0,muscles:['Triceps'],note:'Close diamond position. Bodyweight tricep finisher. Add ruck vest for load.'}],
+    p6:[{id:'p6a',name:'Face Pull (Dumbbell)',reps:'12–15',dw:15,muscles:['Rear Deltoid','Upper Traps'],note:'Bent over, pull toward face with elbows high and wide. Rear delt + upper trap.'},{id:'p6b',name:'Prone Y-Raise',reps:'15',dw:7.5,muscles:['Lower Traps','Rear Deltoid'],note:'Lie face-down on incline bench, raise into Y shape. Lower trap and rear delt.'},{id:'p6c',name:'Flybird Twister (Pull)',reps:'15',dw:0,muscles:['Rear Deltoid (light)'],note:'Pulling motion against resistance. Rear delt activation, light intensity.'}],
+  }
+},
+pull:{
+  label:'Pull Day',focus:'Back · Biceps · Shoulders · Core',
+  exercises:[
+    {id:'q1',name:'Bent-Over Dumbbell Row',sets:3,reps:'10–12',dw:35,ruck:false,muscles:['Lats','Rhomboids','Mid Traps','Biceps'],
+     tempo:'2 up · squeeze · 3 down',
+     tip:'Feet shoulder-width, hinge at hips until torso is nearly parallel to floor. Back flat — imagine a glass of water on your back that can\'t spill. Pull both dumbbells simultaneously to your hips, then lower with full control.',
+     cues:['Think "elbows to back pocket" not "pull the weight up"','Squeeze the shoulder blades together hard at the top — hold for a full second','The stretch at the bottom is as important as the contraction at the top'],
+     mistakes:['Rounding the lower back — this is the most common and most dangerous error here','Using momentum and jerking the torso up to help lift the weight','Not achieving full extension at the bottom — cut the range short and you cut the results']},
+    {id:'q2',name:'Dumbbell Upright Row',sets:3,reps:'12',dw:25,ruck:false,muscles:['Lateral Deltoid','Traps'],
+     tempo:'2 up · pause · 3 down',
+     tip:'Stand tall, dumbbells in front of thighs, palms facing you. Pull straight up along your body until dumbbells reach chin height, elbows flaring out wide above the dumbbells at the top. Lower slowly.',
+     cues:['Keep the dumbbells close to your body throughout the entire movement','Elbows should be higher than your wrists at the top','The movement is vertical — don\'t let the weight drift forward'],
+     mistakes:['Pulling with the hands instead of leading with the elbows','Going too heavy and losing the upright path','Shrugging at the top instead of flaring elbows']},
+    {id:'q3',name:'Seated Dumbbell Curl',sets:3,reps:'10–12',dw:20,ruck:false,muscles:['Biceps Brachii'],
+     tempo:'2 up · squeeze · 3 down',
+     tip:'Seated on bench edge, arms hanging naturally, palms facing forward (away from your body) at the bottom. Curl both arms simultaneously, keeping the palms-forward grip the whole way up. Squeeze hard at peak contraction. Lower fully.',
+     cues:['Palms face forward for the entire rep — there\'s no rotation needed with this grip','Upper arms stay pinned to your sides throughout — don\'t let elbows drift forward','Full extension at the bottom — letting biceps fully lengthen is where the stretch-stimulus comes from'],
+     mistakes:['Swinging the torso back to help lift the weight','Letting the elbows creep forward — this takes load off the bicep','Stopping short of full extension at the bottom']},
+    {id:'q4',name:'Preacher Curl',sets:3,reps:'10–12',dw:17.5,ruck:false,muscles:['Biceps Brachii (isolated)'],
+     tempo:'2 up · squeeze 2 · 4 down',
+     tip:'Seated at the preacher bench, backs of your upper arms flat against the pad, armpit snug to the top edge. Start with arms fully extended. Curl up to full contraction, then lower slowly under control — the pad prevents any cheating.',
+     cues:['The pad does the isolating for you — keep your upper arms glued to it the entire rep','The hold at the top is what builds the peak — 2 full seconds minimum','The 4-second negative is the most important part of this exercise, especially at the bottom stretch'],
+     mistakes:['Letting shoulders lift off the pad at the top of the rep','Rushing the descent — the slow negative is where the muscle damage happens','Using a weight that prevents full extension at the bottom — this movement punishes ego lifting fast']},
+    {id:'q5',name:'Hammer Curl',sets:3,reps:'10–12',dw:25,ruck:false,muscles:['Brachialis','Forearm'],
+     tempo:'2 up · pause · 3 down',
+     tip:'Stand or sit, neutral grip (thumbs pointing up) throughout the entire movement — never rotate. Curl to shoulder height, pause, lower fully. The brachialis under the bicep responds specifically to this grip.',
+     cues:['The neutral grip is non-negotiable — rotation defeats the purpose','Keep upper arms completely stationary against your torso','Full extension at the bottom — let the arms fully straighten between reps'],
+     mistakes:['Rotating the wrist partway through — keep it neutral','Swinging or using momentum','Partial reps that skip the full extension']},
+    {id:'q6',name:'Dumbbell Shrug',sets:3,reps:'15',dw:45,ruck:false,muscles:['Upper Traps'],
+     tempo:'1 up · hold 2 · 2 down',
+     tip:'Stand tall, heavy dumbbells at sides, arms straight. Shrug straight up toward ears — no rolling, no rotation, just vertical elevation. Hold at the top for 2 full seconds. Lower with control.',
+     cues:['The hold at the top is everything — the trap is a postural muscle that responds to time under tension','Shrug straight up, not forward or in a rolling motion','Keep arms completely straight throughout — no elbow bend'],
+     mistakes:['Rolling the shoulders in a circular motion — this adds nothing and risks injury','Going through the motion too fast and skipping the hold','Using weight that\'s so heavy you can\'t achieve full elevation']},
+    {id:'q7',name:'Dead Bug',sets:3,reps:'8–10 each side',dw:0,ruck:false,muscles:['Deep Core','Transverse Abdominis'],optional:true,
+     tempo:'slow · controlled · breathe',
+     tip:'Lie on your back, arms pointing at ceiling, knees bent at 90° directly above hips. Lower opposite arm and leg toward the floor simultaneously while keeping your lower back pressed INTO the floor. Return and repeat. This is harder than it looks.',
+     cues:['The lower back must stay flat against the floor at all times — this is the entire point of the exercise','Breathe out as you extend — this helps maintain core tension','Move slowly — there\'s no benefit to rushing this one'],
+     mistakes:['Letting the lower back arch up as you extend — if this happens, reduce the range of motion','Holding your breath','Moving both limbs on the same side instead of opposites']},
+  ],
+  swaps:{
+    q1:[{id:'q1a',name:'Chest-Supported Row',reps:'10–12',dw:30,muscles:['Lats','Mid Back'],note:'Lie chest-down on incline bench. Takes lower back completely out of it.'},{id:'q1b',name:'Incline Dumbbell Row',reps:'10–12',dw:30,muscles:['Lats','Rear Deltoid'],note:'Face-down on incline bench. Full range, zero cheating.'},{id:'q1c',name:'Renegade Row',reps:'8–10 each',dw:25,muscles:['Lats','Core'],note:'Push-up position, row one dumbbell at a time. Core + back.'}],
+    q2:[{id:'q2a',name:'Lateral Raise (High-Rep)',reps:'15–20',dw:12.5,muscles:['Lateral Deltoid'],note:'Pure delt volume, no trap involvement.'},{id:'q2b',name:'Rear Delt Fly',reps:'12–15',dw:12.5,muscles:['Rear Deltoid'],note:'Bent over, wide arc. Rear delt and upper back.'},{id:'q2c',name:'Dumbbell High Pull',reps:'10',dw:25,muscles:['Traps','Deltoids'],note:'Explosive upright row. Full shoulder rotation at top.'}],
+    q3:[{id:'q3a',name:'Incline Dumbbell Curl',reps:'10–12',dw:17.5,muscles:['Biceps (long head)'],note:'Arms hang behind body on incline. Maximum bicep stretch.'},{id:'q3b',name:'Zottman Curl',reps:'10–12',dw:17.5,muscles:['Biceps','Forearm'],note:'Supinated up, pronated on the way down. Double stimulus.'},{id:'q3c',name:'Flybird Twister Curl',reps:'15–20',dw:0,muscles:['Biceps (light)'],note:'Light resistance curl motion. Good deload or warm-up option.'}],
+    q4:[{id:'q4a',name:'Spider Curl',reps:'10–12',dw:15,muscles:['Biceps (peak)'],note:'Chest-down on incline bench, curl from fully extended. Peak isolation.'},{id:'q4b',name:'Cross-Body Hammer Curl',reps:'10–12 each',dw:17.5,muscles:['Brachialis'],note:'Curl across toward opposite shoulder. Brachialis emphasis.'},{id:'q4c',name:'Pinwheel Curl',reps:'10–12',dw:20,muscles:['Brachialis','Forearm'],note:'Hammer curl toward outer shoulder. Strong forearm + bicep finisher.'}],
+    q5:[{id:'q5a',name:'Reverse Curl',reps:'12',dw:15,muscles:['Forearm','Brachialis'],note:'Overhand grip. Forearms and brachialis. Most people are weak here.'},{id:'q5b',name:'Cross-Body Hammer Curl',reps:'10–12 each',dw:17.5,muscles:['Brachialis'],note:'Curl across body. Brachialis and forearm emphasis.'},{id:'q5c',name:'Zottman Curl',reps:'10–12',dw:17.5,muscles:['Biceps','Forearm'],note:'Supinated up, pronated down. Full arm stimulus.'}],
+    q6:[{id:'q6a',name:'Single-Arm Shrug',reps:'15 each',dw:45,muscles:['Traps'],note:'One side at a time. Better range and trap isolation.'},{id:'q6b',name:'Behind-Back Shrug',reps:'15',dw:40,muscles:['Traps (different angle)'],note:'Dumbbells behind body. Different upper trap angle.'},{id:'q6c',name:'Farmer Carry Shrug',reps:'20 steps',dw:50,muscles:['Traps','Grip'],note:'Walk with dumbbells while actively shrugging. Traps + grip.'}],
+    q7:[{id:'q7a',name:'Dumbbell Side Bend',reps:'15 each side',dw:25,muscles:['Obliques'],note:'Stand, one dumbbell at side. Bend toward dumbbell side, return. Oblique isolation — simple and effective.'},{id:'q7b',name:'Lying Leg Raise (modified)',reps:'10',dw:0,muscles:['Lower Abs'],note:'Lie on back, hands under glutes, raise legs to 45° only. Lower slowly. Start small.'},{id:'q7c',name:'Seated Knee Tuck',reps:'10',dw:0,muscles:['Abs (beginner)'],note:'Sit on bench edge, lean back slightly, bring knees to chest. Basic beginner core movement.'}],
+  }
+},
+legs:{
+  label:'Legs Day',focus:'Quads · Hamstrings · Glutes · Calves · Hips',
+  exercises:[
+    {id:'l1',name:'Goblet Squat',sets:3,reps:'12–15',dw:40,ruck:true,muscles:['Quads','Glutes','Core'],
+     tempo:'3 down · pause · 2 up',
+     tip:'Hold one dumbbell vertically at chest. Stand shoulder-width, toes slightly out. Squat until elbows touch inside of knees — that\'s full depth. Drive through the whole foot to stand.',
+     cues:['Keep your chest up and torso as vertical as possible throughout','At the bottom, use your elbows to push your knees outward — this opens the hips','Drive the floor away from you on the way up — don\'t just stand up'],
+     mistakes:['Heels coming off the floor — widen stance or elevate heels slightly','Torso collapsing forward at the bottom — reduce weight until you can stay upright','Partial reps — shallow squats train the wrong part of the movement']},
+    {id:'l2',name:'Romanian Deadlift',sets:3,reps:'10–12',dw:40,ruck:false,muscles:['Hamstrings','Glutes','Lower Back'],
+     tempo:'3 down · stretch · 2 up',
+     tip:'Stand, dumbbells in front of thighs. Soft bend in knees — this is fixed throughout. Push your hips back and lower the dumbbells along your legs until you feel a strong hamstring stretch, typically mid-shin. Drive hips forward to return.',
+     cues:['The movement is a hip hinge, not a squat — push the hips back, not the knees forward','Lower back stays neutral throughout — if it rounds, you\'ve gone too far','Feel the hamstring stretch before reversing — that stretch is the load'],
+     mistakes:['Bending the knees more as the weight gets heavier — this turns it into a squat','Rounding the lower back at the bottom — biggest form error on this movement','Rushing the descent and not achieving full hamstring stretch']},
+    {id:'l3',name:'Reverse Lunge',sets:3,reps:'10 each leg',dw:25,ruck:true,muscles:['Quads','Glutes','Hamstrings'],
+     tempo:'3 down · pause · 2 up',
+     tip:'Stand with dumbbells at sides. Step one foot back and lower the back knee toward — but not touching — the floor. Front shin stays vertical. Push through the front heel to return to standing.',
+     cues:['The front shin must stay vertical — if your knee drifts over your toes, step back further','Lower the back knee slowly — don\'t just drop into the bottom','Drive through the front heel, not the toe, to return'],
+     mistakes:['Front knee caving inward — actively push the knee out in line with your foot','Leaning forward as you lower — stay tall','Taking too short a step back — causes front knee to drift forward']},
+    {id:'l4',name:'Bulgarian Split Squat',sets:3,reps:'8–10 each',dw:20,ruck:false,muscles:['Quads','Glutes'],optional:true,
+     tempo:'3 down · pause · 2 up',
+     tip:'Rear foot elevated on bench, front foot stepped far forward. Lower your body straight down until front thigh is parallel to floor. This is a humbling exercise — start lighter than you think.',
+     cues:['Front foot far enough forward that your shin stays vertical at the bottom','Lower straight down — don\'t let the torso pitch forward','Both hips stay square and level throughout'],
+     mistakes:['Front foot too close to the bench — causes front knee to travel way past toes','Rushing through reps — the slow descent is critical for balance and stimulus','Going too heavy before you have the balance dialed in']},
+    {id:'l5',name:'Adductor / Abductor Machine',sets:3,reps:'15',dw:0,ruck:false,muscles:['Inner/Outer Thigh','Hip Stabilizers'],optional:true,
+     tempo:'2 out · pause · 3 back',
+     tip:'For adductor (inner thigh): sit with pads on outside of knees, squeeze legs together. For abductor (outer glute/hip): pads on inside of knees, push legs apart. Do both directions — most people are weak on both.',
+     cues:['Slow and controlled — this is isolation work, not a power movement','Full range of motion on both directions','The pause at full contraction is where the muscle is working hardest'],
+     mistakes:['Using momentum to swing the weight — this defeats the purpose','Partial range of motion','Ignoring one direction — adductor and abductor should both be trained']},
+    {id:'l6',name:'Dumbbell Calf Raise',sets:3,reps:'20',dw:40,ruck:true,muscles:['Gastrocnemius','Soleus'],
+     tempo:'2 up · hold 2 · 3 down',
+     tip:'Stand on the edge of a step with heels hanging off, or on flat floor. Dumbbells at sides. Rise up on toes as high as possible, hold, then lower below the step level for a full stretch if on a step.',
+     cues:['Full range of motion — both the peak contraction AND the full stretch at the bottom matter','The 2-second hold at the top is what makes this effective — don\'t skip it','Calves respond to high reps and time under tension more than any other muscle'],
+     mistakes:['Partial range of motion — bouncing halfway up and not achieving full stretch','Going too fast — calves get nothing from rushed reps','Not using a step — full stretch is only possible when the heel can drop below the standing surface']},
+    {id:'l7',name:'Dumbbell Deadlift',sets:3,reps:'12',dw:45,ruck:false,muscles:['Hamstrings','Glutes','Lower Back','Traps'],
+     tempo:'3 down · pause · 2 up',
+     tip:'Feet shoulder-width, dumbbells outside your feet. Hinge down and grip. Back flat, chest up, hips above knees. Drive through the floor to stand, hips and shoulders rise at the same rate. Lower with full control.',
+     cues:['Think of pushing the floor away from you rather than pulling the weight up','Keep the dumbbells as close to your legs as possible throughout','Lock your hips out fully at the top — glutes squeezed'],
+     mistakes:['Rounding the lower back at the bottom — the most important thing to avoid','Letting the dumbbells drift away from the body','Jerking the weight off the floor instead of building tension before the pull']},
+  ],
+  swaps:{
+    l1:[{id:'l1a',name:'Goblet Squat + Ruck Vest',reps:'12–15',dw:35,muscles:['Quads','Glutes'],note:'Add 30 lb vest instead of heavier dumbbell. Frees up hands, changes load distribution.'},{id:'l1b',name:'Dumbbell Box Squat',reps:'12',dw:35,muscles:['Quads','Glutes'],note:'Sit back onto bench, stand up. Good for squat mechanics.'},{id:'l1c',name:'Dumbbell Step-Up',reps:'10 each',dw:25,muscles:['Quads','Glutes (unilateral)'],note:'Step onto bench, drive through heel. Single-leg glute and quad.'}],
+    l2:[{id:'l2a',name:'Stiff-Leg Deadlift',reps:'10–12',dw:35,muscles:['Hamstrings'],note:'Legs nearly straight. Maximum hamstring stretch. Lighter than RDL.'},{id:'l2b',name:'Single-Leg RDL',reps:'8–10 each',dw:20,muscles:['Hamstrings','Balance'],note:'Balance on one leg. Hamstrings + balance challenge.'},{id:'l2c',name:'Dumbbell Good Morning',reps:'12',dw:20,muscles:['Hamstrings','Lower Back'],note:'Dumbbells at shoulders, hinge at hips. Hamstrings + lower back.'}],
+    l3:[{id:'l3a',name:'Reverse Lunge + Ruck',reps:'10 each',dw:20,muscles:['Quads','Glutes'],note:'Add ruck vest for load. Reduces grip fatigue, increases total weight.'},{id:'l3b',name:'Lateral Lunge',reps:'10 each',dw:20,muscles:['Adductors','Glutes'],note:'Step out to side. Inner thigh and hip abductor.'},{id:'l3c',name:'Curtsy Lunge',reps:'10 each',dw:20,muscles:['Glute Medius'],note:'Step behind and across. Glute med and outer glute emphasis.'}],
+    l4:[{id:'l4a',name:'Forward Lunge',reps:'10 each',dw:25,muscles:['Quads'],note:'More quad-dominant. Good swap if balance is an issue with BSS.'},{id:'l4b',name:'Dumbbell Sumo Squat',reps:'12',dw:45,muscles:['Inner Thigh','Glutes'],note:'Wide stance, one dumbbell. Inner thigh and glute emphasis.'},{id:'l4c',name:'Pulse Squat',reps:'20',dw:30,muscles:['Quads (burnout)'],note:'Bottom of goblet squat, small pulses. Quad burnout.'}],
+    l5:[{id:'l5a',name:'Abductor Only',reps:'15',dw:0,muscles:['Outer Hip'],note:'Just the outward push. Outer glute and hip abductor in isolation.'},{id:'l5b',name:'Adductor Only',reps:'15',dw:0,muscles:['Inner Thigh'],note:'Just the inward squeeze. Inner thigh isolation.'},{id:'l5c',name:'Lateral Band Walk (no band)',reps:'20 steps each',dw:0,muscles:['Hip Abductors'],note:'Squat slightly, step sideways. Hip abductor bodyweight option if machine isn\'t available.'}],
+    l6:[{id:'l6a',name:'Single-Leg Calf Raise',reps:'15 each',dw:30,muscles:['Calves (isolated)'],note:'One leg at a time. Better isolation and range of motion.'},{id:'l6b',name:'Seated Calf Raise',reps:'20',dw:40,muscles:['Soleus'],note:'Sit on bench, dumbbells on knees. Soleus emphasis.'},{id:'l6c',name:'Calf Raise + Ruck Vest',reps:'20',dw:0,muscles:['Calves'],note:'Add ruck vest instead of dumbbells. Frees up balance, increases load.'}],
+    l7:[{id:'l7a',name:'Dumbbell Deadlift + Ruck',reps:'10',dw:35,muscles:['Hamstrings','Glutes'],note:'Add ruck vest. Reduces dumbbell load needed, changes feel.'},{id:'l7b',name:'Dumbbell Swing',reps:'15',dw:35,muscles:['Hips','Cardio'],note:'Kettlebell-style with dumbbell. Hip hinge power + cardio.'},{id:'l7c',name:'Weighted Plank',reps:'45 sec',dw:25,muscles:['Core'],note:'Dumbbell on back. Core stability closer.'}],
+  }
+}
+};
+
+const BONUSES=[
+  {id:'b1',icon:'💪',name:'Bicep 21s',desc:'7 bottom + 7 top + 7 full reps',day:'pull',tip:'Moderate weight. 7 reps from bottom to halfway, 7 from halfway to top, 7 full reps — zero rest between. By rep 15 it should be burning badly. This is a bicep-specific finisher.'},
+  {id:'b2',icon:'🔥',name:'Lateral Raise Burnout',desc:'3-weight drop set to failure',day:'push',tip:'Start at working weight, raise to failure. Drop 2.5–5 lbs immediately, failure again. One more drop. Three rounds, no rest. Shoulders should be completely cooked.'},
+  {id:'b3',icon:'⚡',name:'Curl Drop Set',desc:'3 drops, each to failure',day:'pull',tip:'Working weight to failure. Drop 2.5 lbs, failure again. One more drop. No rest between. This is the last stimulus of the session — make it count.'},
+  {id:'b4',icon:'🏋️',name:'Shoulder Press Burnout',desc:'2 rounds to failure at reduced weight',day:'push',tip:'Drop 30% off your working press weight. Press until you literally cannot complete a rep. Rest 20 seconds. One more round. Keep form strict — no leg drive.'},
+  {id:'b5',icon:'💥',name:'Tricep Dips',desc:'Bodyweight dips to failure — 2 rounds',day:'push',tip:'Use bench edge or two sturdy chairs. Lower until upper arms are parallel to floor, press back up. Keep torso upright for tricep emphasis, lean forward slightly for more chest. Two rounds to failure with 30 seconds rest between.'},
+  {id:'b6',icon:'🦵',name:'Squat to Failure',desc:'Bodyweight — rep continuously until done',day:'legs',tip:'No weight needed. Squat continuously at a controlled pace until your legs refuse. Hold the bottom position for 5 extra seconds on the last rep. Brutal and simple.'},
+  {id:'b7',icon:'🎯',name:'Hammer Curl 21s',desc:'Same 21s format — neutral grip',day:'pull',tip:'7 reps bottom to halfway, 7 halfway to top, 7 full reps. Neutral grip throughout. Hits the brachialis and forearm that regular 21s miss. Use same or slightly lighter weight than regular 21s.'},
+  {id:'b8',icon:'🔁',name:'Superset Burnout',desc:'Curls + lateral raises, no rest, alternate',day:'pull',tip:'10 curls, immediately 10 lateral raises, back to curls — keep alternating with no rest until form breaks down. Upper arm flush — biceps and shoulders together. Good finisher for any session.'},
+  {id:'b9',icon:'🦾',name:'Shrug Burnout',desc:'High reps to failure',day:'pull',tip:'Lighter than your working shrugs. Rep continuously until the traps fatigue completely. Hold the last rep at the top for 5 seconds. Traps respond to volume — give them what they want.'},
+  {id:'b10',icon:'🦶',name:'Calf Raise Burnout',desc:'Single-leg, each side to failure',day:'legs',tip:'No weight. Stand on one leg (use wall for balance if needed), calf raise to failure. Switch. Two rounds each side. Range of motion matters more than speed here.'},
+  {id:'b11',icon:'🏋️',name:'Push-Up Board Burnout',desc:'Max reps to failure — any grip',day:'push',tip:'Pick a grip position on your push-up board and rep to absolute failure. Rest 20 seconds. Pick a different grip and go again. Add ruck vest for more resistance. Good chest and tricep closer.'},
+  {id:'b12',icon:'🎗️',name:'Chest Press Drop Set',desc:'3 drops from working weight, to failure',day:'push',tip:'Start at your working flat press weight. Press to failure. Drop 2.5 lbs, failure again. One more drop. No rest between drops. Full chest flush at the end of push day.'},
+  {id:'b13',icon:'🔙',name:'Row to Failure',desc:'Bent-over row, drop weight 2x to failure',day:'pull',tip:'Working row weight to failure. Drop 5 lbs immediately, failure again. One more drop. The back has a lot of endurance capacity — this is how you actually tax it at the end of a pull session.'},
+  {id:'b14',icon:'🧘',name:'Plank Hold',desc:'3 x max time holds',day:'pull',tip:'Start on forearms and toes, body perfectly straight from head to heel. Hold as long as possible with good form. Rest 30 seconds. Repeat 3 times. Log your best time. This is your core baseline — watch it improve over weeks. Beginner goal: 30 seconds. Intermediate: 60 seconds.'},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+function newState(){return{sessions:[],currentDay:null,activeSession:null,view:'workout',openEx:null,openSwap:null,openBonus:null,openHistIdx:null,_pr:null,gainsMode:false,defaultSwaps:{}}}
+function load(){try{const r=localStorage.getItem(SK);return r?JSON.parse(r):null}catch{return null}}
+function save(){localStorage.setItem(SK,JSON.stringify(S))}
+let S=load()||newState();
+if(!S.defaultSwaps)S.defaultSwaps={};
+if(S.gainsMode===undefined)S.gainsMode=false;
+if(!S.ruckLogs)S.ruckLogs=[];
+if(!S._ruckDraft)S._ruckDraft={tags:[]};
+if(!S._postQDraft)S._postQDraft={};
+if(!S.weightLogs)S.weightLogs=[];
+if(!S.moreView)S.moreView='weight';
+if(S.bodyIndexFilter===undefined)S.bodyIndexFilter=null;
+// If a session's timer was left running when the app was last closed, freeze it at that point
+// rather than letting it keep counting real-world time while the app was closed.
+if(S.activeSession&&S.activeSession.timerStart){
+  S.activeSession.timerElapsed=(S.activeSession.timerElapsed||0)+Math.floor((Date.now()-S.activeSession.timerStart)/1000);
+  S.activeSession.timerStart=null;
+  save();
+}
+let timerIv=null;
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function getLog(){return S.activeSession?S.activeSession.log:{}}
+function setLog(k,v){if(S.activeSession){S.activeSession.log[k]=v;save()}}
+function getSessionsForDay(day){return(S.sessions||[]).filter(s=>s.day===day).sort((a,b)=>new Date(b.date)-new Date(a.date))}
+function getLastSession(day){const a=getSessionsForDay(day);return a.length?a[0]:null}
+function getEffEx(day,idx){
+  const log=getLog();const base=DB[day].exercises[idx];
+  const sessionSwap=log[`ex${idx}_swap`];
+  let swapId;
+  if(sessionSwap==='_base_')swapId=null;
+  else if(sessionSwap!==undefined)swapId=sessionSwap;
+  else swapId=(S.defaultSwaps&&S.defaultSwaps[day]&&S.defaultSwaps[day][base.id])||null;
+  if(!swapId)return applyGains(base,true);
+  const found=(DB[day].swaps[base.id]||[]).find(s=>s.id===swapId);
+  return found?applyGains({...base,name:found.name,reps:found.reps,dw:found.dw,tip:found.note,muscles:found.muscles||base.muscles,cues:[],mistakes:[],_swapped:true},false):applyGains(base,true);
+}
+// In Gains Mode, show 6-8 reps instead of the normal rep range
+function applyGains(ex,isBase){
+  if(!S.gainsMode||ex.dw<=0)return ex;
+  return{...ex,reps:'6–8'};
+}
+function wtKey(idx){return S.gainsMode?`ex${idx}_wtg`:`ex${idx}_wt`}
+function getWeight(day,idx){
+  const log=getLog();const k=wtKey(idx);if(log[k]!==undefined)return log[k];
+  const ex=getEffEx(day,idx);const last=getLastSession(day);
+  if(last&&last.log[k]!==undefined)return last.log[k];
+  if(S.gainsMode){
+    // Suggest a heavier weight based on normal-mode (10-12 rep) history, ~15% up, rounded to 2.5
+    const normalWt=(last&&last.log[`ex${idx}_wt`]!==undefined)?last.log[`ex${idx}_wt`]:ex.dw;
+    return Math.min(52.5,Math.round((normalWt*1.15)/2.5)*2.5);
+  }
+  return ex.dw;
+}
+function getPrevInfo(day,idx){
+  const last=getLastSession(day);if(!last)return null;
+  const k=wtKey(idx);const ll=last.log;if(ll[k]===undefined)return null;
+  return{wt:ll[k],feel:ll[`ex${idx}_feel${S.gainsMode?'g':''}`]||null,reps:ll[`ex${idx}_reps${S.gainsMode?'g':''}`]||null};
+}
+function getElapsed(){
+  const sess=S.activeSession;if(!sess)return 0;
+  if(!sess.timerStart)return sess.timerElapsed||0;
+  return(sess.timerElapsed||0)+Math.floor((Date.now()-sess.timerStart)/1000);
+}
+function fmt(sec){return`${Math.floor(sec/60).toString().padStart(2,'0')}:${(sec%60).toString().padStart(2,'0')}`}
+function fmtDate(iso){const d=new Date(iso);return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}
+function isToday(iso){const d=new Date(iso);const n=new Date();return d.toDateString()===n.toDateString()}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Weight steps: 2.5 lb increments, max 52.5
+function stepWeight(cur,dir){const n=Math.round((cur+dir*2.5)*10)/10;return Math.min(52.5,Math.max(2.5,n))}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(){renderHeader();renderMain()}
+function renderHeader(){
+  ['push','pull','legs','ruck','more'].forEach(d=>{document.getElementById(`tab-${d}`).className='dtab'+(S.currentDay===d?' active':'')});
+  const badge=document.getElementById('sessionBadge');
+  const sess=S.activeSession;
+  badge.textContent=sess?`${sess.day.toUpperCase()} · ${fmt(getElapsed())}`:'';
+}
+function renderMain(){
+  const main=document.getElementById('main');
+  if(!S.currentDay){
+    main.innerHTML=`<div style="text-align:center;padding:60px 20px"><div style="font-family:'Bebas Neue',cursive;font-size:2rem;color:var(--muted);letter-spacing:3px;margin-bottom:12px">SELECT A DAY</div><p style="color:var(--muted);font-size:0.85rem">Choose Push, Pull, Legs, or Ruck above to begin</p></div>`;
+    return;
+  }
+  if(S.currentDay==='ruck'){main.innerHTML=renderRuck();return}
+  if(S.currentDay==='more'){main.innerHTML=renderMore();return}
+  const day=S.currentDay;const sess=S.activeSession;
+  let html=`<div class="vtabs"><button class="vtab ${S.view==='workout'?'active':''}" onclick="setView('workout')">Workout</button><button class="vtab ${S.view==='history'?'active':''}" onclick="setView('history')">History</button><button class="vtab ${S.view==='data'?'active':''}" onclick="setView('data')">Save / Load</button></div>`;
+  if(S.view==='history'){main.innerHTML=html+renderHistory(day);startTick();return}
+  if(S.view==='data'){main.innerHTML=html+renderData();return}
+  const workout=DB[day];
+  if(!sess||sess.day!==day){
+    const last=getLastSession(day);
+    if(last&&!last.postQ&&isToday(last.date)){
+      html+=renderPostQ(day,last);
+      main.innerHTML=html;return;
+    }
+    html+=`<div class="start-card">
+      <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">${workout.label}</div>
+      <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px">${workout.focus}</div>
+      ${last?`<div style="font-size:0.78rem;color:var(--muted);margin-bottom:14px">Last session: <span style="color:var(--accent)">${fmtDate(last.date)}</span>${last.readiness?` · Readiness ${last.readiness}/5`:''}</div>`:'<div style="font-size:0.78rem;color:var(--muted);margin-bottom:14px">No previous session logged yet</div>'}
+      <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">How are you feeling today?</div>
+      <div class="readiness-row">${[1,2,3,4,5].map(n=>`<button class="r-btn ${S._pr===n?'sel':''}" onclick="S._pr=${n};render()">${n}</button>`).join('')}</div>
+      <div style="font-size:0.65rem;color:var(--muted);text-align:center;margin-bottom:14px;letter-spacing:1px">1 = Rough &nbsp;·&nbsp; 3 = Normal &nbsp;·&nbsp; 5 = Feeling great</div>
+      <button onclick="beginSession('${day}')" style="width:100%;padding:12px;background:var(--accent);border:none;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;border-radius:2px;color:#0f0f0f">START ${workout.label.toUpperCase()}</button>
+    </div>`;
+    main.innerHTML=html;return;
+  }
+  const log=getLog();const elapsed=getElapsed();const timerRunning=!!sess.timerStart;
+  const doneCount=workout.exercises.filter((_,i)=>log[`ex${i}_done`]).length;
+  const coreExes=workout.exercises.filter(e=>!e.optional);
+  const coreDone=coreExes.filter((_,i)=>{const ri=workout.exercises.indexOf(_);return log[`ex${ri}_done`]}).length;
+  const pct=Math.round(doneCount/workout.exercises.length*100);
+  const isLogged=(S.sessions||[]).some(s=>s.sessionId===sess.sessionId);
+  html+=`<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+    <div><div style="font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:2px">${workout.label}</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase">${workout.focus}</div></div>
+    ${sess.readiness?`<span style="font-size:0.65rem;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)">Readiness ${sess.readiness}/5</span>`:''}
+  </div>
+  <button onclick="toggleGains()" style="width:100%;padding:10px;margin-bottom:14px;background:${S.gainsMode?'var(--accent2)':'transparent'};border:1px solid ${S.gainsMode?'var(--accent2)':'var(--border)'};color:${S.gainsMode?'#fff':'var(--muted)'};font-family:'Bebas Neue',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;border-radius:2px">${S.gainsMode?'💪 GAINS MODE ON · 6–8 REPS, HEAVIER':'💪 SWITCH TO GAINS MODE (6–8 REPS)'}</button>
+  <div class="timer-bar">
+    <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px">Session Time</div>
+    <div class="timer-disp ${elapsed>=25*60?'warn':''}" id="timerDisp">${fmt(elapsed)}</div></div>
+    <button class="tbtn ${timerRunning?'running':''}" onclick="toggleTimer()">${timerRunning?'PAUSE':elapsed>0?'RESUME':'START'}</button>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-lbl"><span>Progress</span><span>${doneCount}/${workout.exercises.length} exercises</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+  </div>`;
+
+  workout.exercises.forEach((baseEx,i)=>{
+    const ex=getEffEx(day,i);const done=!!log[`ex${i}_done`];const sets=log[`ex${i}_sets`]||Array(baseEx.sets).fill(false);
+    const isOpen=S.openEx===i;const isSwapOpen=S.openSwap===i;const wt=getWeight(day,i);
+    const feel=log[`ex${i}_feel${S.gainsMode?'g':''}`]||null;const repsNote=log[`ex${i}_reps${S.gainsMode?'g':''}`]||null;const prev=getPrevInfo(day,i);
+    let prevLine='';
+    if(prev){
+      const hint=prev.feel==='light'?' · ⬆ go heavier':prev.feel==='heavy'?' · ⬇ drop weight':'';
+      const rh=prev.reps==='short'?' · missed reps':prev.reps==='easy'?' · felt easy':'';
+      prevLine=`<div class="wt-prev">Last: ${prev.wt} lbs${hint}${rh}</div>`;
+    }
+    const swaps=DB[day].swaps[baseEx.id]||[];
+    const defaultSwapId=S.defaultSwaps&&S.defaultSwaps[day]&&S.defaultSwaps[day][baseEx.id];
+    let swapPanel='';
+    if(isSwapOpen&&!done){
+      swapPanel=`<div class="swap-panel"><div class="swap-ttl">Swap Exercise</div>
+        ${swaps.map(s=>`<div style="margin-bottom:5px">
+          <button class="swap-opt" style="margin-bottom:0" onclick="doSwap(${i},'${s.id}')"><span>${s.name} <span style="color:var(--muted);font-size:0.7rem">${s.reps}</span></span><small>${s.note}${s.muscles?` · ${s.muscles.join(', ')}`:''}</small></button>
+          <button onclick="event.stopPropagation();setDefaultSwap('${day}','${baseEx.id}','${s.id}');doSwap(${i},'${s.id}')" style="width:100%;text-align:left;padding:4px 11px 0;background:transparent;border:none;color:${defaultSwapId===s.id?'var(--accent)':'var(--muted)'};font-size:0.66rem;cursor:pointer;font-family:'DM Sans',sans-serif">${defaultSwapId===s.id?'⭐ Default for this slot':'☆ Make this my default'}</button>
+        </div>`).join('')}
+        ${ex._swapped||defaultSwapId?`<button class="swap-opt" onclick="clearDefaultSwap('${day}','${baseEx.id}');resetSwap(${i})" style="border-color:var(--accent2);color:var(--accent2)">↩ Restore original: ${baseEx.name}</button>`:''}
+        <button class="swap-cancel" onclick="S.openSwap=null;render()">Cancel</button></div>`;
+    }
+    const feelHint=prev&&prev.feel==='light'?` <span style="font-size:0.6rem;color:var(--green-b)">⬆</span>`:prev&&prev.feel==='heavy'?` <span style="font-size:0.6rem;color:var(--red-b)">⬇</span>`:'';
+    const optLabel=baseEx.optional?`<span style="font-size:0.6rem;color:var(--muted);margin-left:4px">OPTIONAL</span>`:'';
+    const ruckLabel=baseEx.ruck?`<span class="ruck-badge">🎒 RUCK OK</span>`:'';
+
+    html+=`<div class="ex-card ${done?'done':''} ${baseEx.optional?'optional-ex':''}">
+      <div class="ex-hdr" onclick="toggleEx(${i})">
+        <div class="ex-num">${i+1}</div>
+        <div class="ex-inf">
+          <div class="ex-name">${ex.name}${ex._swapped?` <span style="font-size:0.6rem;color:var(--accent2)">${defaultSwapId?'DEFAULT':'SWAPPED'}</span>`:''}${feelHint}${optLabel}${ruckLabel}</div>
+          <div class="ex-meta">${baseEx.sets} sets × ${ex.reps} · <span style="color:var(--accent)">${wt>0?wt+' lbs':'bodyweight'}</span>${ex.muscles?` · ${ex.muscles.join(' · ')}`:''}</div>
+        </div>
+        <div class="ex-tag">${done?'✓ Done':isOpen?'▲':'▼'}</div>
+      </div>
+      <div class="ex-body ${isOpen&&!done?'open':''}">
+        <div class="form-block">
+          <div class="tempo-badge">⏱ TEMPO: ${ex.tempo||'controlled'}</div>
+          <div class="form-title">Movement</div>
+          <div class="form-cue">${ex.tip}</div>
+          ${ex.cues&&ex.cues.length?`<div class="form-title" style="margin-top:8px">Form Cues</div>${ex.cues.map(c=>`<div class="form-cue">• ${c}</div>`).join('')}`:''}
+          ${ex.mistakes&&ex.mistakes.length?`<div class="mistake-row"><div class="mistake-title">⚠ Common Mistakes</div>${ex.mistakes.map(m=>`<div class="form-cue" style="color:var(--red-b)">• ${m}</div>`).join('')}</div>`:''}
+        </div>
+        ${wt>0?`<div class="wt-row">
+          <div class="wt-left"><div class="wt-lbl">Weight</div>${prevLine}</div>
+          <div class="wt-ctrl">
+            <button class="wadj" onclick="adjWt(${i},-1)">−</button>
+            <div><div class="wval">${wt}</div><div class="wunit">lbs</div></div>
+            <button class="wadj" onclick="adjWt(${i},1)">+</button>
+          </div>
+        </div>`:''}
+        <div class="feel-row">
+          <button class="fbtn light ${feel==='light'?'sel':''}" onclick="setFeel(${i},'light')">😅 Too Light</button>
+          <button class="fbtn perfect ${feel==='perfect'?'sel':''}" onclick="setFeel(${i},'perfect')">✓ Just Right</button>
+          <button class="fbtn heavy ${feel==='heavy'?'sel':''}" onclick="setFeel(${i},'heavy')">💀 Too Heavy</button>
+        </div>
+        <div style="font-size:0.68rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Did you complete all reps?</div>
+        <div class="reps-row">
+          <button class="repbtn ${repsNote==='all'?'sel':''}" onclick="setReps(${i},'all')">✓ All reps</button>
+          <button class="repbtn ${repsNote==='short'?'sel':''}" onclick="setReps(${i},'short')">✗ Missed some</button>
+          <button class="repbtn ${repsNote==='easy'?'sel':''}" onclick="setReps(${i},'easy')">⚡ Felt easy</button>
+        </div>
+        ${swapPanel}
+        ${!isSwapOpen&&!done?`<button class="swap-btn" onclick="S.openSwap=${i};render()">⇄ Swap This Exercise</button>`:''}
+        <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px">Tap each set when done</div>
+        <div class="sets-row">${sets.map((d,si)=>`<button class="sbt ${d?'done-s':''}" onclick="toggleSet(${i},${si})">S${si+1}</button>`).join('')}</div>
+        <button class="mark-btn" onclick="markDone(${i})">✓ Mark Exercise Complete</button>
+      </div>
+    </div>`;
+  });
+
+  // Bonus section — filter by day
+  const dayBonuses=BONUSES.filter(b=>b.day===day||b.day==='all');
+  const bonusDone=sess.bonusDone;
+  html+=`<div class="sec-hdr">Bonus Burnout</div><div class="sec-sub">Optional — pick one finisher</div>`;
+  dayBonuses.forEach(b=>{
+    const isBDone=bonusDone===b.id;const otherDone=bonusDone&&bonusDone!==b.id;
+    if(otherDone&&!isBDone)return;
+    const isOpen=S.openBonus===b.id;
+    html+=`<div class="bonus-card ${isOpen?'b-open':''} ${isBDone?'b-done':''}">
+      <div class="b-hdr" onclick="toggleBonus('${b.id}')"><div class="b-icon">${b.icon}</div><div class="b-inf"><div class="b-name">${b.name}</div><div class="b-desc">${b.desc}</div></div><div class="b-tag">${isBDone?'✓ Done':isOpen?'▲':'▼'}</div></div>
+      <div class="b-body ${isOpen&&!isBDone?'open':''}"><div class="tip">${b.tip}</div><button class="b-log-btn" onclick="logBonus('${b.id}')">LOG BURNOUT ✓</button></div>
+    </div>`;
+  });
+
+  if(doneCount===workout.exercises.length){
+    html+=`<div class="done-banner show"><h2>Main Work Done!</h2><p>Add a burnout or log the session.</p><button class="log-btn" onclick="finishSession()">LOG WORKOUT</button></div>`;
+  }
+  main.innerHTML=html;startTick();
+}
+
+function renderHistory(day){
+  const sessions=getSessionsForDay(day);const workout=DB[day];
+  if(!sessions.length)return`<div style="padding:30px;text-align:center;color:var(--muted);font-size:0.85rem">No sessions logged for ${workout.label} yet.</div>`;
+  let html='';
+  sessions.forEach((sess,si)=>{
+    const isOpen=S.openHistIdx===si;const ll=sess.log||{};
+    const bonus=sess.bonusDone?BONUSES.find(b=>b.id===sess.bonusDone):null;
+    const dur=sess.duration?`${Math.round(sess.duration/60)} min`:'';
+    html+=`<div class="hist-session"><div class="hist-hdr" onclick="S.openHistIdx=S.openHistIdx===${si}?null:${si};render()">
+      <div><div class="hist-date">${fmtDate(sess.date)}</div><div class="hist-meta">${dur}${sess.readiness?` · Readiness ${sess.readiness}/5`:''}${bonus?` · +${bonus.name}`:''}</div></div>
+      <div style="color:var(--muted);font-size:0.8rem">${isOpen?'▲':'▼'}</div></div>
+      <div class="hist-body ${isOpen?'open':''}">`;
+    workout.exercises.forEach((baseEx,i)=>{
+      const swapId=ll[`ex${i}_swap`];const swapEx=(swapId&&swapId!=='_base_')?(DB[day].swaps[baseEx.id]||[]).find(s=>s.id===swapId):null;
+      const exName=swapEx?swapEx.name:baseEx.name;
+      const wt=ll[`ex${i}_wt`]!==undefined?ll[`ex${i}_wt`]:ll[`ex${i}_wtg`];
+      const wasGains=ll[`ex${i}_wt`]===undefined&&ll[`ex${i}_wtg`]!==undefined;
+      const feel=ll[`ex${i}_feel`]||ll[`ex${i}_feelg`];const repsNote=ll[`ex${i}_reps`]||ll[`ex${i}_repsg`];const done=ll[`ex${i}_done`];
+      if(!done&&wt===undefined)return;
+      const feelMap={light:'😅 Too light',perfect:'✓ Just right',heavy:'💀 Too heavy'};
+      const repsMap={all:'Got all reps',short:'Missed some',easy:'Felt easy'};
+      html+=`<div class="hist-ex-row"><div><div class="hist-ex-name">${exName}${swapEx?' <span style="font-size:0.6rem;color:var(--accent2)">swapped</span>':''}${wasGains?' <span style="font-size:0.6rem;color:var(--accent2)">GAINS</span>':''}</div><div class="hist-ex-detail">${baseEx.sets}×${wasGains?'6–8':baseEx.reps}${repsNote?` · ${repsMap[repsNote]||''}`:''}</div></div>
+        <div style="text-align:right;flex-shrink:0;margin-left:10px">${wt!==undefined?`<div class="hist-wt">${wt} lbs</div>`:'<div class="hist-wt" style="color:var(--muted)">BW</div>'}<div class="hist-feel" style="color:${feel==='light'?'var(--green-b)':feel==='heavy'?'var(--red-b)':'var(--accent)'}">${feel?feelMap[feel]:''}</div></div></div>`;
+    });
+    if(bonus)html+=`<div style="font-size:0.78rem;color:var(--accent2);padding-top:8px;border-top:1px solid var(--border);margin-top:4px">${bonus.icon} Bonus: ${bonus.name}</div>`;
+    if(sess.postQ&&!sess.postQ.skipped){
+      html+=`<div style="font-size:0.75rem;color:var(--muted);padding-top:8px;border-top:1px solid var(--border);margin-top:8px">
+        ${sess.postQ.effort?`Effort ${sess.postQ.effort}/5`:''}${sess.postQ.energy?` · Went in ${sess.postQ.energy}`:''}${sess.postQ.flag?` · Flagged: ${sess.postQ.flag}`:''}
+        ${sess.postQ.note?`<div style="margin-top:4px">${escHtml(sess.postQ.note)}</div>`:''}
+      </div>`;
+    }
+    html+=`</div></div>`;
+  });
+  return html;
+}
+
+function renderData(){
+  const ds=JSON.stringify(S,null,2);
+  return`<div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;color:var(--muted);margin-bottom:8px">SAVE YOUR DATA</div>
+    <p style="font-size:0.78rem;color:var(--muted);margin-bottom:12px;line-height:1.6">Copy this data and save it somewhere safe (Notes, email). To restore after the app resets, paste it back and hit Import. Saving the HTML file to your phone makes localStorage permanent.</p>
+    <button class="data-btn primary" onclick="copyData()">📋 Copy Data to Clipboard</button>
+    <div class="data-area">${escHtml(ds.substring(0,500))}${ds.length>500?'...':''}</div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--muted);margin:16px 0 8px">RESTORE DATA</div>
+    <textarea class="data-import" id="importArea" placeholder="Paste your saved data here..."></textarea>
+    <button class="data-btn" onclick="importData()">Import & Restore</button>
+    <button class="data-btn" onclick="if(confirm('Clear all data? This cannot be undone.')){localStorage.removeItem(SK);S=newState();render()}" style="color:var(--red-b);border-color:var(--red-b);margin-top:4px">⚠ Clear All Data</button>
+  </div>`;
+}
+
+// ─── POST-WORKOUT QUESTIONNAIRE ───────────────────────────────────────────────
+function renderPostQ(day,sessionObj){
+  const draft=S._postQDraft||{};
+  const exNames=DB[day].exercises.map((e,i)=>{
+    const swapId=sessionObj.log[`ex${i}_swap`];const s=swapId&&swapId!=='_base_'?(DB[day].swaps[e.id]||[]).find(x=>x.id===swapId):null;
+    return s?s.name:e.name;
+  });
+  return `<div class="start-card">
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">Quick Check-In</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">${DB[day].label} · ${fmtDate(sessionObj.date)}</div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Overall effort</div>
+    <div class="readiness-row" style="margin-bottom:16px">${[1,2,3,4,5].map(n=>rbtnHtml(n,draft.effort===n,`setPostQDraft('effort',${n})`)).join('')}</div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Energy going in</div>
+    <div class="readiness-row" style="margin-bottom:16px">
+      ${['Rested','Normal','Running on Empty'].map(o=>rbtnHtml(o,draft.energy===o,`setPostQDraft('energy','${o}')`)).join('')}
+    </div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Anything to flag for next time? (optional)</div>
+    <select id="postQFlag" style="width:100%;padding:9px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text);margin-bottom:16px;font-size:0.82rem">
+      <option value="">None</option>
+      ${exNames.map(n=>`<option value="${n}" ${draft.flag===n?'selected':''}>${n}</option>`).join('')}
+    </select>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Notes (optional)</div>
+    <textarea id="postQNote" class="data-import" style="min-height:60px;margin-bottom:16px" placeholder="Anything else worth remembering...">${draft.note||''}</textarea>
+
+    <button onclick="submitPostQ('${sessionObj.sessionId}')" style="width:100%;padding:12px;background:var(--accent);border:none;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;border-radius:2px;color:#0f0f0f;margin-bottom:8px">SAVE CHECK-IN</button>
+    <button onclick="skipPostQ('${sessionObj.sessionId}')" style="width:100%;padding:9px;background:transparent;border:1px dashed var(--border);color:var(--muted);font-size:0.78rem;cursor:pointer;border-radius:2px">Skip for this session</button>
+  </div>`;
+}
+function setPostQDraft(k,v){if(!S._postQDraft)S._postQDraft={};S._postQDraft[k]=S._postQDraft[k]===v?null:v;save();render()}
+function submitPostQ(sessionId){
+  const sess=(S.sessions||[]).find(s=>s.sessionId===sessionId);if(!sess)return;
+  const flag=document.getElementById('postQFlag')?document.getElementById('postQFlag').value:'';
+  const note=document.getElementById('postQNote')?document.getElementById('postQNote').value.trim():'';
+  const draft=S._postQDraft||{};
+  sess.postQ={effort:draft.effort||null,energy:draft.energy||null,flag:flag||null,note};
+  S._postQDraft={};save();render();
+}
+function skipPostQ(sessionId){
+  const sess=(S.sessions||[]).find(s=>s.sessionId===sessionId);if(!sess)return;
+  sess.postQ={skipped:true};S._postQDraft={};save();render();
+}
+
+
+const RUCK_OUTCOMES=['Crushed it','Got it done','Cut it short'];
+const RUCK_TAGS=['Energized','Strong','Steady','Sluggish','Sore','Foggy','Great Mood','Tired Legs'];
+function rbtnHtml(label,active,onclick,extraStyle){
+  return `<button class="r-btn ${active?'sel':''}" style="${extraStyle||''}" onclick="${onclick}">${label}</button>`;
+}
+function renderRuck(){
+  const draft=S._ruckDraft||{tags:[]};
+  const logs=(S.ruckLogs||[]).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  let html=`<div class="start-card">
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">Morning Ruck</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">30 lb Vest · Weekday Walk</div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Did you make the most of it?</div>
+    <div class="readiness-row" style="margin-bottom:16px">
+      ${RUCK_OUTCOMES.map(o=>rbtnHtml(o,draft.outcome===o,`setRuckDraft('outcome','${o}')`)).join('')}
+    </div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Effort level</div>
+    <div class="readiness-row" style="margin-bottom:16px">
+      ${['Easy','Moderate','Hard'].map(o=>rbtnHtml(o,draft.effort===o,`setRuckDraft('effort','${o}')`)).join('')}
+    </div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">How did your body feel? (tap all that apply)</div>
+    <div style="display:flex;flex-wrap:wrap;margin-bottom:16px">
+      ${RUCK_TAGS.map(t=>rbtnHtml(t,(draft.tags||[]).includes(t),`toggleRuckTag('${t}')`,'flex:none;padding:8px 12px;margin:0 6px 6px 0')).join('')}
+    </div>
+
+    <div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Anything else worth noting? (optional)</div>
+    <textarea id="ruckNote" class="data-import" style="min-height:60px;margin-bottom:16px" placeholder="Route, weather, how you're recovering...">${draft.note||''}</textarea>
+
+    <button onclick="saveRuck()" style="width:100%;padding:12px;background:var(--accent);border:none;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;border-radius:2px;color:#0f0f0f">LOG THIS RUCK</button>
+  </div>`;
+
+  html+=`<div class="sec-hdr">Ruck History</div>`;
+  if(!logs.length){
+    html+=`<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem">No rucks logged yet.</div>`;
+  } else {
+    logs.slice(0,14).forEach(l=>{
+      html+=`<div class="hist-session"><div class="hist-hdr" style="cursor:default;border-bottom:none">
+        <div><div class="hist-date">${fmtDate(l.date)}</div><div class="hist-meta">${l.outcome||''}${l.effort?` · ${l.effort} effort`:''}</div></div>
+        <button onclick="deleteRuck('${l.id}')" style="background:transparent;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer">✕</button>
+      </div>
+      ${(l.tags&&l.tags.length)||l.note?`<div style="padding:0 14px 12px">
+        ${l.tags&&l.tags.length?`<div style="font-size:0.7rem;color:var(--accent);margin-bottom:4px">${l.tags.join(' · ')}</div>`:''}
+        ${l.note?`<div style="font-size:0.75rem;color:var(--muted)">${escHtml(l.note)}</div>`:''}
+      </div>`:''}
+      </div>`;
+    });
+  }
+  return html;
+}
+function setRuckDraft(k,v){
+  if(!S._ruckDraft)S._ruckDraft={tags:[]};
+  S._ruckDraft[k]=S._ruckDraft[k]===v?null:v;save();render();
+}
+function toggleRuckTag(t){
+  if(!S._ruckDraft)S._ruckDraft={tags:[]};
+  const tags=S._ruckDraft.tags||[];
+  S._ruckDraft.tags=tags.includes(t)?tags.filter(x=>x!==t):[...tags,t];
+  save();render();
+}
+function saveRuck(){
+  const note=document.getElementById('ruckNote')?document.getElementById('ruckNote').value.trim():'';
+  const draft=S._ruckDraft||{};
+  if(!S.ruckLogs)S.ruckLogs=[];
+  S.ruckLogs.push({id:Date.now().toString(),date:new Date().toISOString(),outcome:draft.outcome||null,effort:draft.effort||null,tags:draft.tags||[],note});
+  S._ruckDraft={tags:[]};
+  save();render();
+}
+function deleteRuck(id){
+  S.ruckLogs=(S.ruckLogs||[]).filter(l=>l.id!==id);save();render();
+}
+
+// ─── MORE: WEIGHT TRACKER · TIPS · BODY INDEX ─────────────────────────────────
+function renderMore(){
+  const mv=S.moreView||'weight';
+  let html=`<div class="vtabs">
+    <button class="vtab ${mv==='weight'?'active':''}" onclick="setMoreView('weight')">Weight</button>
+    <button class="vtab ${mv==='tips'?'active':''}" onclick="setMoreView('tips')">Tips</button>
+    <button class="vtab ${mv==='index'?'active':''}" onclick="setMoreView('index')">Body Index</button>
+  </div>`;
+  if(mv==='weight')return html+renderWeightTracker();
+  if(mv==='tips')return html+renderTips();
+  return html+renderBodyIndex();
+}
+function setMoreView(v){S.moreView=v;save();render()}
+
+// ── Weight Tracker ──
+function renderWeightTracker(){
+  const logs=(S.weightLogs||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const recent=logs.slice(-20);
+  let html=`<div class="start-card">
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">Weight Log</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">Quick trend tracking</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="wtInput" type="number" step="0.1" placeholder="Weight (lbs)" style="flex:1;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text);font-size:0.9rem">
+    </div>
+    <textarea id="wtNote" class="data-import" style="min-height:44px;margin-bottom:10px" placeholder="Optional note..."></textarea>
+    <button onclick="logWeight()" style="width:100%;padding:12px;background:var(--accent);border:none;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;border-radius:2px;color:#0f0f0f">LOG WEIGHT</button>
+  </div>`;
+
+  if(recent.length>=2){
+    html+=`<div class="start-card">${sparkline(recent)}</div>`;
+  }
+
+  html+=`<div class="sec-hdr">History</div>`;
+  if(!logs.length){
+    html+=`<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem">No entries yet — log your first weigh-in above.</div>`;
+  } else {
+    logs.slice().reverse().slice(0,25).forEach((l,idx,arr)=>{
+      const olderIdx=logs.findIndex(x=>x.id===l.id)-1;
+      const prev=olderIdx>=0?logs[olderIdx]:null;
+      const delta=prev?Math.round((l.weight-prev.weight)*10)/10:null;
+      const deltaTxt=delta===null?'':delta===0?'· No change':delta>0?`· +${delta} lbs`:`· ${delta} lbs`;
+      const deltaColor=delta>0?'var(--red-b)':delta<0?'var(--green-b)':'var(--muted)';
+      html+=`<div class="hist-session"><div class="hist-hdr" style="cursor:default;border-bottom:none">
+        <div><div class="hist-date">${fmtDate(l.date)}</div><div class="hist-meta" style="color:${deltaColor}">${l.weight} lbs ${deltaTxt}</div></div>
+        <button onclick="deleteWeight('${l.id}')" style="background:transparent;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer">✕</button>
+      </div>${l.note?`<div style="padding:0 14px 12px;font-size:0.75rem;color:var(--muted)">${escHtml(l.note)}</div>`:''}</div>`;
+    });
+  }
+  return html;
+}
+function sparkline(entries){
+  const w=280,h=70,pad=8;
+  const vals=entries.map(e=>e.weight);
+  const min=Math.min(...vals),max=Math.max(...vals);
+  const range=(max-min)||1;
+  const pts=entries.map((e,i)=>{
+    const x=pad+(i/(entries.length-1))*(w-pad*2);
+    const y=h-pad-((e.weight-min)/range)*(h-pad*2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  return `<div style="font-size:0.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Last ${entries.length} entries · ${min}–${max} lbs</div>
+    <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block">
+      <polyline points="${pts}" fill="none" stroke="#e8ff47" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>`;
+}
+function logWeight(){
+  const val=parseFloat(document.getElementById('wtInput').value);
+  if(!val||val<=0){alert('Enter a valid weight first.');return}
+  const note=document.getElementById('wtNote').value.trim();
+  if(!S.weightLogs)S.weightLogs=[];
+  S.weightLogs.push({id:Date.now().toString(),date:new Date().toISOString(),weight:val,note});
+  save();render();
+}
+function deleteWeight(id){S.weightLogs=(S.weightLogs||[]).filter(l=>l.id!==id);save();render()}
+
+// ── Health & Nutrition Tips ──
+const TIP_CATEGORIES=[
+  {title:'🍗 Nutrition',tips:[
+    'Protein is the lever that matters most right now — on a GLP-1 with reduced appetite, prioritize protein first at every meal before anything else, since total food volume is naturally lower.',
+    'Sip water steadily through the day rather than chugging — appetite suppression can mask thirst cues too.',
+    'A general starting point many people combining GLP-1 use with strength training aim for is roughly 0.6–0.8g of protein per lb of goal bodyweight — worth confirming your specific number with your prescriber or a dietitian.',
+    'Fiber and electrolytes matter more when eating less overall — a pinch of salt in water or an electrolyte packet on rucking days can help.',
+  ]},
+  {title:'💊 Supplements (general, not medical advice)',tips:[
+    'Creatine monohydrate is one of the most well-studied supplements for strength and muscle retention — a common general approach is 3–5g daily, taken any time.',
+    'Vitamin D and omega-3s are commonly low in people eating less overall — worth asking your doctor if bloodwork supports supplementing.',
+    'A basic multivitamin can be reasonable insurance if food volume is down — but food first, supplements second.',
+    'Always run new supplements by your prescriber given your current GLP-1 use — some interactions are worth a quick check.',
+  ]},
+  {title:'🧠 Mental Fortitude',tips:[
+    'Progress isn\'t linear — a rough week of energy or motivation isn\'t a failure, it\'s data. Look at the trend over a month, not a day.',
+    'Celebrate process wins (showed up, hit the ruck, tried the heavier set) as much as outcome wins (the scale, the PR).',
+    'When motivation dips, lower the bar temporarily rather than skipping entirely — a 10-minute walk beats a skipped day for keeping the streak alive.',
+    'Write down why you started, once, somewhere you\'ll actually see it again.',
+  ]},
+  {title:'📊 Metrics Worth Tracking',tips:[
+    'Body weight trend (weekly average, not daily) tells you more than any single weigh-in — daily water/food weight swings are normal and noisy.',
+    'Working weight per exercise over time is your best strength signal — that\'s already what Iron Room logs for you.',
+    'Resting heart rate and sleep quality are strong early-warning signs of overtraining or under-recovery.',
+    'A simple energy rating (1–5) each morning, tracked over weeks, often reveals patterns tied to sleep, nutrition, or stress you wouldn\'t otherwise notice.',
+  ]},
+  {title:'🏋️ Training Additions Worth Considering',tips:[
+    'Once your current PPL + ruck routine feels dialed in, a once-weekly mobility or stretching session is a cheap way to protect long-term joint health.',
+    'Grip strength is easy to neglect — farmer carries or dead hangs are a quick add-on if you notice it lagging.',
+    'A deload week (lighter weights, same movement patterns) every 6-8 weeks helps long-term progress more than it costs short-term.',
+  ]},
+];
+function renderTips(){
+  let html=`<div class="start-card">
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">Health Toolbox</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px">General guidance, not medical advice</div>
+    <div style="font-size:0.75rem;color:var(--muted);line-height:1.6">Given your GLP-1 use and training load, treat this as a starting point for conversation with your prescriber or dietitian — not a personalized plan.</div>
+  </div>`;
+  TIP_CATEGORIES.forEach((cat,ci)=>{
+    html+=`<div class="sec-hdr">${cat.title}</div>`;
+    cat.tips.forEach(t=>{
+      html+=`<div class="form-block" style="margin-bottom:8px"><div class="form-cue">${t}</div></div>`;
+    });
+  });
+  return html;
+}
+
+// ── Body-Part Exercise Index ──
+const MUSCLE_GROUPS={
+  'Chest':['chest','pectoralis'],
+  'Shoulders':['deltoid','shoulder'],
+  'Triceps':['triceps'],
+  'Biceps/Arms':['biceps','brachial','forearm'],
+  'Back/Lats':['lats','rhomboid','mid back','serratus'],
+  'Traps':['trap'],
+  'Core/Abs':['core','abs','oblique','transverse'],
+  'Quads':['quad'],
+  'Hamstrings':['hamstring'],
+  'Glutes':['glute'],
+  'Calves':['calf','calves','gastrocnemius','soleus'],
+  'Hips/Inner Thigh':['hip','thigh','adductor','abductor'],
+};
+function exerciseGroups(muscles){
+  if(!muscles)return[];
+  const text=muscles.join(' ').toLowerCase();
+  return Object.keys(MUSCLE_GROUPS).filter(g=>MUSCLE_GROUPS[g].some(kw=>text.includes(kw)));
+}
+function renderBodyIndex(){
+  const active=S.bodyIndexFilter;
+  let html=`<div class="start-card">
+    <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px">Body Index</div>
+    <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px">Tap a muscle group to see every exercise that hits it</div>
+    <div style="display:flex;flex-wrap:wrap">
+      ${Object.keys(MUSCLE_GROUPS).map(g=>rbtnHtml(g,active===g,`setBodyFilter('${g}')`,'flex:none;padding:9px 13px;margin:0 6px 6px 0')).join('')}
+    </div>
+  </div>`;
+  if(!active)return html;
+
+  const results=[];
+  ['push','pull','legs'].forEach(day=>{
+    DB[day].exercises.forEach(ex=>{
+      if(exerciseGroups(ex.muscles).includes(active)){
+        results.push({day,name:ex.name,sets:ex.sets,reps:ex.reps,muscles:ex.muscles,type:'Primary'});
+      }
+      (DB[day].swaps[ex.id]||[]).forEach(s=>{
+        if(exerciseGroups(s.muscles).includes(active)){
+          results.push({day,name:s.name,sets:ex.sets,reps:s.reps,muscles:s.muscles,type:`Swap for ${ex.name}`});
+        }
+      });
+    });
+  });
+
+  html+=`<div class="sec-hdr">${active} · ${results.length} exercise${results.length===1?'':'s'}</div>`;
+  const dayLabel={push:'Push',pull:'Pull',legs:'Legs'};
+  const dayColor={push:'var(--accent2)',pull:'var(--blue-b)',legs:'var(--green-b)'};
+  results.forEach(r=>{
+    html+=`<div class="ex-card"><div class="ex-hdr" style="cursor:default">
+      <div class="ex-inf">
+        <div class="ex-name">${r.name} <span style="font-size:0.6rem;color:${dayColor[r.day]}">${dayLabel[r.day]}</span></div>
+        <div class="ex-meta">${r.sets} sets × ${r.reps}${r.muscles?` · ${r.muscles.join(' · ')}`:''}</div>
+      </div>
+      <div class="ex-tag">${r.type==='Primary'?'Main Lift':'Swap'}</div>
+    </div></div>`;
+  });
+  return html;
+}
+function setBodyFilter(g){S.bodyIndexFilter=S.bodyIndexFilter===g?null:g;save();render()}
+
+// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
+function selectDay(d){S.currentDay=d;S.view='workout';S.openEx=null;S.openSwap=null;S.openBonus=null;save();render()}
+
+function setView(v){S.view=v;S.openHistIdx=null;save();render()}
+function beginSession(day){
+  S.activeSession={day,date:new Date().toISOString(),sessionId:Date.now().toString(),readiness:S._pr||null,timerStart:Date.now(),timerElapsed:0,log:{},bonusDone:null};
+  S._pr=null;save();render();
+}
+function toggleEx(i){S.openEx=S.openEx===i?null:i;S.openSwap=null;render()}
+function adjWt(i,dir){const w=stepWeight(getWeight(S.currentDay,i),dir);setLog(wtKey(i),w);render()}
+function setFeel(i,f){const k=`ex${i}_feel${S.gainsMode?'g':''}`;const cur=getLog()[k];setLog(k,cur===f?null:f);render()}
+function setReps(i,r){const k=`ex${i}_reps${S.gainsMode?'g':''}`;const cur=getLog()[k];setLog(k,cur===r?null:r);render()}
+function doSwap(i,sid){setLog(`ex${i}_swap`,sid);setLog(wtKey(i),undefined);S.openSwap=null;render()}
+function resetSwap(i){setLog(`ex${i}_swap`,'_base_');setLog(wtKey(i),undefined);S.openSwap=null;render()}
+function setDefaultSwap(day,baseId,sid){
+  if(!S.defaultSwaps)S.defaultSwaps={};if(!S.defaultSwaps[day])S.defaultSwaps[day]={};
+  S.defaultSwaps[day][baseId]=sid;save();
+}
+function clearDefaultSwap(day,baseId){
+  if(S.defaultSwaps&&S.defaultSwaps[day])delete S.defaultSwaps[day][baseId];save();
+}
+function toggleGains(){S.gainsMode=!S.gainsMode;save();render()}
+function toggleSet(i,si){
+  const ex=DB[S.currentDay].exercises[i];const sets=getLog()[`ex${i}_sets`]||Array(ex.sets).fill(false);
+  sets[si]=!sets[si];setLog(`ex${i}_sets`,sets);
+  if(getWeight(S.currentDay,i)>0)setLog(wtKey(i),getWeight(S.currentDay,i));
+  render();
+}
+function markDone(i){
+  const ex=DB[S.currentDay].exercises[i];
+  // Snapshot the weight actually used, even if it was never touched (fixes weight memory not carrying over)
+  if(getWeight(S.currentDay,i)>0)setLog(wtKey(i),getWeight(S.currentDay,i));
+  setLog(`ex${i}_done`,true);setLog(`ex${i}_sets`,Array(ex.sets).fill(true));
+  S.openEx=null;S.openSwap=null;render();
+}
+function toggleBonus(id){S.openBonus=S.openBonus===id?null:id;render()}
+function logBonus(id){if(S.activeSession){S.activeSession.bonusDone=id;save();}S.openBonus=null;render()}
+function finishSession(){
+  const sess=S.activeSession;if(!sess)return;
+  sess.timerElapsed=getElapsed();sess.duration=sess.timerElapsed;sess.timerStart=null;
+  if(!S.sessions)S.sessions=[];S.sessions.push({...sess});S.activeSession=null;save();render();
+}
+function toggleTimer(){
+  const sess=S.activeSession;if(!sess)return;
+  if(sess.timerStart){sess.timerElapsed=getElapsed();sess.timerStart=null;clearInterval(timerIv);timerIv=null;}
+  else{sess.timerStart=Date.now();startTick();}
+  save();render();
+}
+function startTick(){
+  clearInterval(timerIv);
+  if(!S.activeSession||!S.activeSession.timerStart)return;
+  timerIv=setInterval(()=>{
+    const el=document.getElementById('timerDisp');const badge=document.getElementById('sessionBadge');const sess=S.activeSession;
+    if(!el||!sess){clearInterval(timerIv);return;}
+    const e=getElapsed();el.textContent=fmt(e);el.className='timer-disp'+(e>=25*60?' warn':'');
+    if(badge)badge.textContent=`${sess.day.toUpperCase()} · ${fmt(e)}`;
+  },1000);
+}
+function copyData(){
+  navigator.clipboard.writeText(JSON.stringify(S)).then(()=>alert('Copied!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=JSON.stringify(S);document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Data copied!');
+  });
+}
+function importData(){
+  const raw=document.getElementById('importArea').value.trim();
+  try{const p=JSON.parse(raw);if(!p.sessions)throw new Error();S=p;localStorage.setItem(SK,JSON.stringify(S));alert('Restored!');render();}
+  catch{alert('Invalid data — make sure you pasted the full exported text.');}
+}
+render();
+</script>
+</body>
+</html>
