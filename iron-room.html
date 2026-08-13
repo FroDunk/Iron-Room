@@ -318,13 +318,43 @@ const BONUSES=[
   {id:'b14',icon:'🧘',name:'Plank Hold',desc:'3 x max time holds',day:'pull',tip:'Start on forearms and toes, body perfectly straight from head to heel. Hold as long as possible with good form. Rest 30 seconds. Repeat 3 times. Log your best time. This is your core baseline — watch it improve over weeks. Beginner goal: 30 seconds. Intermediate: 60 seconds.'},
 ];
 
+// ─── MOBILITY / STRETCHES ──────────────────────────────────────────────────────
+const MOBILITY={
+  // PT-assigned — shown on every day since thoracic/scap mobility carries across push, pull, and legs
+  pt:[
+    {id:'pt1',pt:true,name:'Resisted Wall Thoracic Rotation',desc:'Thoracic spine mobility',
+     instructions:'Stand facing away from a wall, holding a light band or ball against the wall at chest height with both hands, in a half-kneeling or split stance. Rotate your torso away from the wall against the resistance, then return. Keep your hips facing forward — the rotation should come from your mid-back, not your hips or low back.'},
+    {id:'pt2',pt:true,name:'Seated Thoracic Extension Overpressure',desc:'Upper back extension',
+     instructions:'Sit tall in a chair with your hands behind your head or crossed over your chest. Gently arch/extend your upper back over the top of the chair back, adding light overpressure to increase the stretch. Move slowly and stop at the edge of a comfortable stretch, not pain.'},
+    {id:'pt3',pt:true,name:'Standing Levator Scapulae Stretch',desc:'Neck/scapula stretch',
+     instructions:'Stand tall, tilt your head down and slightly to one side (chin toward the opposite armpit). Use your same-side hand to apply gentle overpressure. Hold, breathe, then switch sides.'},
+  ],
+  push:[
+    {id:'sp1',name:'Doorway Chest Stretch',desc:'Chest & front shoulder',instructions:'Place your forearm on a doorframe at shoulder height, step forward through the doorway until you feel a stretch across your chest and front shoulder. Hold, then switch sides.'},
+    {id:'sp2',name:'Overhead Triceps Stretch',desc:'Triceps',instructions:'Raise one arm overhead, bend the elbow so your hand drops behind your head, use the other hand to gently press the elbow further. Hold, then switch sides.'},
+    {id:'sp3',name:'Cross-Body Shoulder Stretch',desc:'Rear shoulder',instructions:'Bring one arm straight across your chest, use the other forearm to gently pull it closer. Hold, then switch sides.'},
+  ],
+  pull:[
+    {id:'sl1',name:'Standing Lat Stretch',desc:'Lats / side body',instructions:'Reach one arm overhead and lean your torso to the opposite side, feeling the stretch down your side and lat. Hold, then switch sides.'},
+    {id:'sl2',name:'Wall Bicep Stretch',desc:'Biceps/forearm',instructions:'Place your palm flat against a wall behind you at shoulder height, fingers pointing back, then gently rotate your torso away until you feel the stretch through the front of your arm.'},
+    {id:'sl3',name:'Cat-Cow',desc:'Thoracic spine mobility',instructions:'On hands and knees, alternate between arching your back up toward the ceiling (rounding) and dropping your belly while lifting your chest (extending). Move slowly with your breath.'},
+  ],
+  legs:[
+    {id:'sg1',name:'Standing Quad Stretch',desc:'Quads',instructions:'Standing on one leg (hold something for balance if needed), grab your other ankle and pull your heel toward your glute, keeping knees close together. Hold, then switch sides.'},
+    {id:'sg2',name:'Standing Hamstring Stretch',desc:'Hamstrings',instructions:'Prop one heel on a low surface with your leg straight, hinge forward from the hips keeping your back flat until you feel a stretch behind the thigh. Hold, then switch sides.'},
+    {id:'sg3',name:'Calf Wall Stretch',desc:'Calves',instructions:'Facing a wall, step one foot back with the heel flat on the floor and lean into the wall until you feel the stretch in your calf. Hold, then switch sides.'},
+    {id:'sg4',name:'Hip Flexor Lunge Stretch',desc:'Hip flexors',instructions:'From a kneeling lunge position, tuck your pelvis slightly and shift your weight forward until you feel a stretch in the front of the hip of your back leg. Hold, then switch sides.'},
+  ],
+};
+
 // ─── STATE ────────────────────────────────────────────────────────────────────
-function newState(){return{sessions:[],currentDay:null,activeSession:null,view:'workout',openEx:null,openSwap:null,openBonus:null,openHistIdx:null,_pr:null,gainsMode:false,defaultSwaps:{}}}
+function newState(){return{sessions:[],currentDay:null,activeSession:null,view:'workout',openEx:null,openSwap:null,openBonus:null,openMob:null,openHistIdx:null,_pr:null,gainsMode:false,rebuildMode:false,defaultSwaps:{}}}
 function load(){try{const r=localStorage.getItem(SK);return r?JSON.parse(r):null}catch{return null}}
 function save(){localStorage.setItem(SK,JSON.stringify(S))}
 let S=load()||newState();
 if(!S.defaultSwaps)S.defaultSwaps={};
 if(S.gainsMode===undefined)S.gainsMode=false;
+if(S.rebuildMode===undefined)S.rebuildMode=false;
 if(!S.ruckLogs)S.ruckLogs=[];
 if(!S._ruckDraft)S._ruckDraft={tags:[]};
 if(!S._postQDraft)S._postQDraft={};
@@ -352,31 +382,40 @@ function getEffEx(day,idx){
   if(sessionSwap==='_base_')swapId=null;
   else if(sessionSwap!==undefined)swapId=sessionSwap;
   else swapId=(S.defaultSwaps&&S.defaultSwaps[day]&&S.defaultSwaps[day][base.id])||null;
-  if(!swapId)return applyGains(base,true);
+  if(!swapId)return applyMode(base);
   const found=(DB[day].swaps[base.id]||[]).find(s=>s.id===swapId);
-  return found?applyGains({...base,name:found.name,reps:found.reps,dw:found.dw,tip:found.note,muscles:found.muscles||base.muscles,cues:[],mistakes:[],_swapped:true},false):applyGains(base,true);
+  return found?applyMode({...base,name:found.name,reps:found.reps,dw:found.dw,tip:found.note,muscles:found.muscles||base.muscles,cues:[],mistakes:[],_swapped:true}):applyMode(base);
 }
-// In Gains Mode, show 6-8 reps instead of the normal rep range
-function applyGains(ex,isBase){
-  if(!S.gainsMode||ex.dw<=0)return ex;
-  return{...ex,reps:'6–8'};
+function trainingMode(){return S.gainsMode?'gains':S.rebuildMode?'rebuild':'normal'}
+function modeSuffix(){return S.gainsMode?'g':S.rebuildMode?'r':''}
+// Gains Mode drops to 6-8 reps; Rebuild Mode shifts to higher-rep, lighter-load work while easing back in
+function applyMode(ex){
+  if(ex.dw<=0)return ex;
+  if(S.gainsMode)return{...ex,reps:'6–8'};
+  if(S.rebuildMode)return{...ex,reps:'12–15'};
+  return ex;
 }
-function wtKey(idx){return S.gainsMode?`ex${idx}_wtg`:`ex${idx}_wt`}
+function wtKey(idx){const s=modeSuffix();return s?`ex${idx}_wt${s}`:`ex${idx}_wt`}
 function getWeight(day,idx){
   const log=getLog();const k=wtKey(idx);if(log[k]!==undefined)return log[k];
   const ex=getEffEx(day,idx);const last=getLastSession(day);
   if(last&&last.log[k]!==undefined)return last.log[k];
+  const normalWt=(last&&last.log[`ex${idx}_wt`]!==undefined)?last.log[`ex${idx}_wt`]:ex.dw;
   if(S.gainsMode){
     // Suggest a heavier weight based on normal-mode (10-12 rep) history, ~15% up, rounded to 2.5
-    const normalWt=(last&&last.log[`ex${idx}_wt`]!==undefined)?last.log[`ex${idx}_wt`]:ex.dw;
     return Math.min(52.5,Math.round((normalWt*1.15)/2.5)*2.5);
+  }
+  if(S.rebuildMode){
+    // Suggest a conservative ~60% of your last normal-mode working weight while easing back in
+    return Math.max(2.5,Math.round((normalWt*0.6)/2.5)*2.5);
   }
   return ex.dw;
 }
 function getPrevInfo(day,idx){
   const last=getLastSession(day);if(!last)return null;
   const k=wtKey(idx);const ll=last.log;if(ll[k]===undefined)return null;
-  return{wt:ll[k],feel:ll[`ex${idx}_feel${S.gainsMode?'g':''}`]||null,reps:ll[`ex${idx}_reps${S.gainsMode?'g':''}`]||null};
+  const s=modeSuffix();
+  return{wt:ll[k],feel:ll[`ex${idx}_feel${s}`]||null,reps:ll[`ex${idx}_reps${s}`]||null};
 }
 function getElapsed(){
   const sess=S.activeSession;if(!sess)return 0;
@@ -439,11 +478,19 @@ function renderMain(){
     <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:3px;text-transform:uppercase">${workout.focus}</div></div>
     ${sess.readiness?`<span style="font-size:0.65rem;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted)">Readiness ${sess.readiness}/5</span>`:''}
   </div>
-  <button onclick="toggleGains()" style="width:100%;padding:10px;margin-bottom:14px;background:${S.gainsMode?'var(--accent2)':'transparent'};border:1px solid ${S.gainsMode?'var(--accent2)':'var(--border)'};color:${S.gainsMode?'#fff':'var(--muted)'};font-family:'Bebas Neue',cursive;font-size:1.05rem;letter-spacing:2px;cursor:pointer;border-radius:2px">${S.gainsMode?'💪 GAINS MODE ON · 6–8 REPS, HEAVIER':'💪 SWITCH TO GAINS MODE (6–8 REPS)'}</button>
+  <div style="display:flex;gap:8px;margin-bottom:14px">
+    <button onclick="toggleMode('gains')" style="flex:1;padding:10px;background:${S.gainsMode?'var(--accent2)':'transparent'};border:1px solid ${S.gainsMode?'var(--accent2)':'var(--border)'};color:${S.gainsMode?'#fff':'var(--muted)'};font-family:'Bebas Neue',cursive;font-size:0.95rem;letter-spacing:1px;cursor:pointer;border-radius:2px">💪 GAINS${S.gainsMode?' · ON':''}</button>
+    <button onclick="toggleMode('rebuild')" style="flex:1;padding:10px;background:${S.rebuildMode?'var(--blue-b)':'transparent'};border:1px solid ${S.rebuildMode?'var(--blue-b)':'var(--border)'};color:${S.rebuildMode?'#0f0f0f':'var(--muted)'};font-family:'Bebas Neue',cursive;font-size:0.95rem;letter-spacing:1px;cursor:pointer;border-radius:2px">🔄 REBUILD${S.rebuildMode?' · ON':''}</button>
+  </div>
+  ${S.rebuildMode?`<div style="font-size:0.7rem;color:var(--blue-b);margin:-8px 0 14px;line-height:1.5">Suggesting ~60% of your last working weight, higher reps. Bump up only once a weight feels easy for 2 sessions in a row.</div>`:''}
   <div class="timer-bar">
     <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px">Session Time</div>
     <div class="timer-disp ${elapsed>=25*60?'warn':''}" id="timerDisp">${fmt(elapsed)}</div></div>
     <button class="tbtn ${timerRunning?'running':''}" onclick="toggleTimer()">${timerRunning?'PAUSE':elapsed>0?'RESUME':'START'}</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px">
+    <button onclick="finishSession()" style="flex:1;padding:8px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:0.72rem;letter-spacing:1px;cursor:pointer;border-radius:2px">⏹ End & Log Now</button>
+    <button onclick="cancelSession()" style="flex:1;padding:8px;background:transparent;border:1px dashed var(--red-b);color:var(--red-b);font-size:0.72rem;letter-spacing:1px;cursor:pointer;border-radius:2px">✕ Cancel Session</button>
   </div>
   <div class="prog-wrap">
     <div class="prog-lbl"><span>Progress</span><span>${doneCount}/${workout.exercises.length} exercises</span></div>
@@ -453,7 +500,7 @@ function renderMain(){
   workout.exercises.forEach((baseEx,i)=>{
     const ex=getEffEx(day,i);const done=!!log[`ex${i}_done`];const sets=log[`ex${i}_sets`]||Array(baseEx.sets).fill(false);
     const isOpen=S.openEx===i;const isSwapOpen=S.openSwap===i;const wt=getWeight(day,i);
-    const feel=log[`ex${i}_feel${S.gainsMode?'g':''}`]||null;const repsNote=log[`ex${i}_reps${S.gainsMode?'g':''}`]||null;const prev=getPrevInfo(day,i);
+    const feel=log[`ex${i}_feel${modeSuffix()}`]||null;const repsNote=log[`ex${i}_reps${modeSuffix()}`]||null;const prev=getPrevInfo(day,i);
     let prevLine='';
     if(prev){
       const hint=prev.feel==='light'?' · ⬆ go heavier':prev.feel==='heavy'?' · ⬇ drop weight':'';
@@ -535,6 +582,17 @@ function renderMain(){
     </div>`;
   });
 
+  // Mobility & Stretches section
+  const mobItems=[...MOBILITY.pt,...(MOBILITY[day]||[])];
+  html+=`<div class="sec-hdr">Mobility & Stretches</div><div class="sec-sub">PT-assigned work stays pinned across every day · tap to expand</div>`;
+  mobItems.forEach(m=>{
+    const isOpen=S.openMob===m.id;const isDone=!!log[`mob_${m.id}`];
+    html+=`<div class="bonus-card ${isOpen?'b-open':''} ${isDone?'b-done':''}">
+      <div class="b-hdr" onclick="toggleMob('${m.id}')"><div class="b-icon">${m.pt?'🩺':'🧘'}</div><div class="b-inf"><div class="b-name">${m.name}${m.pt?' <span style="font-size:0.6rem;color:var(--blue-b)">PT</span>':''}</div><div class="b-desc">${m.desc}</div></div><div class="b-tag">${isDone?'✓ Done':isOpen?'▲':'▼'}</div></div>
+      <div class="b-body ${isOpen&&!isDone?'open':''}"><div class="tip">${m.instructions}${m.pt?`<div style="margin-top:6px;color:var(--blue-b);font-size:0.72rem">Follow the hold time, reps, and resistance your PT actually prescribed — this is a general reminder of the movement, not a replacement for their instructions.</div>`:''}</div><button class="b-log-btn" style="background:${m.pt?'var(--blue-b)':'var(--accent2)'};color:${m.pt?'#0f0f0f':'#fff'}" onclick="toggleMobDone('${m.id}')">${isDone?'✓ DONE':'MARK DONE'}</button></div>
+    </div>`;
+  });
+
   if(doneCount===workout.exercises.length){
     html+=`<div class="done-banner show"><h2>Main Work Done!</h2><p>Add a burnout or log the session.</p><button class="log-btn" onclick="finishSession()">LOG WORKOUT</button></div>`;
   }
@@ -556,13 +614,14 @@ function renderHistory(day){
     workout.exercises.forEach((baseEx,i)=>{
       const swapId=ll[`ex${i}_swap`];const swapEx=(swapId&&swapId!=='_base_')?(DB[day].swaps[baseEx.id]||[]).find(s=>s.id===swapId):null;
       const exName=swapEx?swapEx.name:baseEx.name;
-      const wt=ll[`ex${i}_wt`]!==undefined?ll[`ex${i}_wt`]:ll[`ex${i}_wtg`];
+      const wt=ll[`ex${i}_wt`]!==undefined?ll[`ex${i}_wt`]:(ll[`ex${i}_wtg`]!==undefined?ll[`ex${i}_wtg`]:ll[`ex${i}_wtr`]);
       const wasGains=ll[`ex${i}_wt`]===undefined&&ll[`ex${i}_wtg`]!==undefined;
-      const feel=ll[`ex${i}_feel`]||ll[`ex${i}_feelg`];const repsNote=ll[`ex${i}_reps`]||ll[`ex${i}_repsg`];const done=ll[`ex${i}_done`];
+      const wasRebuild=ll[`ex${i}_wt`]===undefined&&ll[`ex${i}_wtg`]===undefined&&ll[`ex${i}_wtr`]!==undefined;
+      const feel=ll[`ex${i}_feel`]||ll[`ex${i}_feelg`]||ll[`ex${i}_feelr`];const repsNote=ll[`ex${i}_reps`]||ll[`ex${i}_repsg`]||ll[`ex${i}_repsr`];const done=ll[`ex${i}_done`];
       if(!done&&wt===undefined)return;
       const feelMap={light:'😅 Too light',perfect:'✓ Just right',heavy:'💀 Too heavy'};
       const repsMap={all:'Got all reps',short:'Missed some',easy:'Felt easy'};
-      html+=`<div class="hist-ex-row"><div><div class="hist-ex-name">${exName}${swapEx?' <span style="font-size:0.6rem;color:var(--accent2)">swapped</span>':''}${wasGains?' <span style="font-size:0.6rem;color:var(--accent2)">GAINS</span>':''}</div><div class="hist-ex-detail">${baseEx.sets}×${wasGains?'6–8':baseEx.reps}${repsNote?` · ${repsMap[repsNote]||''}`:''}</div></div>
+      html+=`<div class="hist-ex-row"><div><div class="hist-ex-name">${exName}${swapEx?' <span style="font-size:0.6rem;color:var(--accent2)">swapped</span>':''}${wasGains?' <span style="font-size:0.6rem;color:var(--accent2)">GAINS</span>':''}${wasRebuild?' <span style="font-size:0.6rem;color:var(--blue-b)">REBUILD</span>':''}</div><div class="hist-ex-detail">${baseEx.sets}×${wasGains?'6–8':wasRebuild?'12–15':baseEx.reps}${repsNote?` · ${repsMap[repsNote]||''}`:''}</div></div>
         <div style="text-align:right;flex-shrink:0;margin-left:10px">${wt!==undefined?`<div class="hist-wt">${wt} lbs</div>`:'<div class="hist-wt" style="color:var(--muted)">BW</div>'}<div class="hist-feel" style="color:${feel==='light'?'var(--green-b)':feel==='heavy'?'var(--red-b)':'var(--accent)'}">${feel?feelMap[feel]:''}</div></div></div>`;
     });
     if(bonus)html+=`<div style="font-size:0.78rem;color:var(--accent2);padding-top:8px;border-top:1px solid var(--border);margin-top:4px">${bonus.icon} Bonus: ${bonus.name}</div>`;
@@ -788,6 +847,13 @@ function deleteWeight(id){S.weightLogs=(S.weightLogs||[]).filter(l=>l.id!==id);s
 
 // ── Health & Nutrition Tips ──
 const TIP_CATEGORIES=[
+  {title:'🔄 Rebuilding After Time Off',tips:[
+    'Rebuild Mode (on the Push/Pull/Legs screens) auto-suggests roughly 60% of your last logged working weight and shifts to higher reps — a common, conservative way to ease back in.',
+    'Progress weight only after a load feels genuinely easy — all reps clean, no strain — for 2 sessions in a row, not just one good day.',
+    'Full pain-free range of motion comes before added load, every time — if a movement doesn\'t feel clean bodyweight or empty-handed, it\'s not ready for weight yet.',
+    'Sharp pain, numbness, or tingling — especially anything radiating down the arm — is a stop-and-check-with-your-PT signal, not a push-through signal.',
+    'The mobility/stretch section on each day includes your PT-assigned work so it travels with you across every session.',
+  ]},
   {title:'🍗 Nutrition',tips:[
     'Protein is the lever that matters most right now — on a GLP-1 with reduced appetite, prioritize protein first at every meal before anything else, since total food volume is naturally lower.',
     'Sip water steadily through the day rather than chugging — appetite suppression can mask thirst cues too.',
@@ -895,7 +961,7 @@ function renderBodyIndex(){
 function setBodyFilter(g){S.bodyIndexFilter=S.bodyIndexFilter===g?null:g;save();render()}
 
 // ─── INTERACTIONS ─────────────────────────────────────────────────────────────
-function selectDay(d){S.currentDay=d;S.view='workout';S.openEx=null;S.openSwap=null;S.openBonus=null;save();render()}
+function selectDay(d){S.currentDay=d;S.view='workout';S.openEx=null;S.openSwap=null;S.openBonus=null;S.openMob=null;save();render()}
 
 function setView(v){S.view=v;S.openHistIdx=null;save();render()}
 function beginSession(day){
@@ -904,8 +970,8 @@ function beginSession(day){
 }
 function toggleEx(i){S.openEx=S.openEx===i?null:i;S.openSwap=null;render()}
 function adjWt(i,dir){const w=stepWeight(getWeight(S.currentDay,i),dir);setLog(wtKey(i),w);render()}
-function setFeel(i,f){const k=`ex${i}_feel${S.gainsMode?'g':''}`;const cur=getLog()[k];setLog(k,cur===f?null:f);render()}
-function setReps(i,r){const k=`ex${i}_reps${S.gainsMode?'g':''}`;const cur=getLog()[k];setLog(k,cur===r?null:r);render()}
+function setFeel(i,f){const k=`ex${i}_feel${modeSuffix()}`;const cur=getLog()[k];setLog(k,cur===f?null:f);render()}
+function setReps(i,r){const k=`ex${i}_reps${modeSuffix()}`;const cur=getLog()[k];setLog(k,cur===r?null:r);render()}
 function doSwap(i,sid){setLog(`ex${i}_swap`,sid);setLog(wtKey(i),undefined);S.openSwap=null;render()}
 function resetSwap(i){setLog(`ex${i}_swap`,'_base_');setLog(wtKey(i),undefined);S.openSwap=null;render()}
 function setDefaultSwap(day,baseId,sid){
@@ -915,7 +981,11 @@ function setDefaultSwap(day,baseId,sid){
 function clearDefaultSwap(day,baseId){
   if(S.defaultSwaps&&S.defaultSwaps[day])delete S.defaultSwaps[day][baseId];save();
 }
-function toggleGains(){S.gainsMode=!S.gainsMode;save();render()}
+function toggleMode(mode){
+  if(mode==='gains'){S.gainsMode=!S.gainsMode;if(S.gainsMode)S.rebuildMode=false;}
+  else if(mode==='rebuild'){S.rebuildMode=!S.rebuildMode;if(S.rebuildMode)S.gainsMode=false;}
+  save();render();
+}
 function toggleSet(i,si){
   const ex=DB[S.currentDay].exercises[i];const sets=getLog()[`ex${i}_sets`]||Array(ex.sets).fill(false);
   sets[si]=!sets[si];setLog(`ex${i}_sets`,sets);
@@ -931,10 +1001,17 @@ function markDone(i){
 }
 function toggleBonus(id){S.openBonus=S.openBonus===id?null:id;render()}
 function logBonus(id){if(S.activeSession){S.activeSession.bonusDone=id;save();}S.openBonus=null;render()}
+function toggleMob(id){S.openMob=S.openMob===id?null:id;render()}
+function toggleMobDone(id){setLog(`mob_${id}`,!getLog()[`mob_${id}`]);render()}
 function finishSession(){
   const sess=S.activeSession;if(!sess)return;
   sess.timerElapsed=getElapsed();sess.duration=sess.timerElapsed;sess.timerStart=null;
   if(!S.sessions)S.sessions=[];S.sessions.push({...sess});S.activeSession=null;save();render();
+}
+function cancelSession(){
+  if(!S.activeSession)return;
+  if(!confirm('Discard this workout? Nothing will be saved to history.'))return;
+  S.activeSession=null;save();render();
 }
 function toggleTimer(){
   const sess=S.activeSession;if(!sess)return;
